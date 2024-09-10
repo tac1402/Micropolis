@@ -1,20 +1,12 @@
-# Micropolis Unity Version
+# Micropolis Unity Version 2017
 
 Micropolis is a ground up C# rewrite of the MicropolisCore system using the Unity engine to create a full blown Micropolis native game that runs on Windows, Mac, and Unix. It includes a fully working city simulation game true to the original along with several new features and improvements.
 
 ![screenshot](https://github.com/bsimser/micropolis-unity/blob/develop/images/micropolis.png)
 
-## Installation
-
-You'll be able to install a copy of Micropolis once we have an installer (using [Squirrel](https://github.com/Squirrel/Squirrel.Windows)). In the meantime you can download or clone this repository and run it from within Unity (it's not recommended to fork the repo at this time as there a lot of changes going on and the current codebase isn't stable yet).
-
-## Documentation
+## Documentation 2017
 
 Please see our [wiki](https://github.com/bsimser/micropolis-unity/wiki) for everything you wanted to know about Micropolis, but were afraid to ask.
-
-## Latest News
-
-For a [list of known issues see GitHub](https://github.com/bsimser/micropolis-unity/issues) or take a look at the [roadmap](https://github.com/bsimser/micropolis-unity/wiki/Roadmap) or by watching this repo and subscribing to notifications.
 
 ## License
 
@@ -32,15 +24,11 @@ Skip ahead a few years and, well, things haven't gone too far. A few people have
 
 So here we are with yet-another-port. I guess.
 
-## This Project
+## Project 2017
 
 This rewrite of Micropolis represents a culmination of sources from the original Micropolis source code release which was made up of modified TCL/Tk C code (based on the original X11 Multiplayer Unix release of SimCity, but with the Multiplayer bits removed) and the C++/Python rewrite done by [Don Hopkins](https://github.com/SimHacker). 
 
 Using both of these codebases as a reference, this project builds a C# 2D game using the Unity engine for graphics and UI. The result is a game that runs on modern hardware as a single stand-alone executable with the ability to port and run on other platforms (iOS, Android, etc.). No special tools are required to run it except a computer. The installation is a single click download (with built-in automatic updates so you always have the latest version).
-
-Going beyond the origina, the plan is to continue to evolve this desktop version with new features that brings the old school gameplay of city building and new ideas together in a modern package.
-
-## Building
 
 This project can be built using the free version of Unity v2017.3 on any platform the Unity Editor is supported. Just open the project and build. All code and assets are included. Micropolis makes use of the following (free) assets:
 * [TextMesh Pro](https://assetstore.unity.com/packages/essentials/beta-projects/textmesh-pro-84126)
@@ -48,4 +36,8 @@ This project can be built using the free version of Unity v2017.3 on any platfor
 
 Both assets are free and from Unity Technologies and should be downloaded and installed prior to opening the project in Unity.
 
-Enjoy!
+## Project 2024
+Further development will be carried out by the developer in Russian, you can use a translator.
+
+Спустя более, чем 5 лет, я обнаружил этот заброшенный исходный код. И решил его немного привести к современному виду. Тем более прочитав заметки предыдущих разработчиков увидел, что они так же собирались орефакторить данный код, намериваясь сделать его объектно-ориентированным. Что стало с предыдущими разрабочиками мне не ведомо. Единственно, что происходило после 2017 года, мной была обнаружена ветка с обновлением версии Юнити до 2019. Первое что я сделал это обновил версию юнити 2022.3.16f1. Теперь, все это помещенно в master ветку, и пляски начинаются. Я веду канал на ютубе, на котором буду освещать ход рефакторинга https://www.youtube.com/@hardlandingtac . 
+
