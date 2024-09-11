@@ -11,7 +11,10 @@
     /// </summary>
     public enum MapTileCharacters
     {
-        DIRT = 0, // Clear tile
+        // Одиночные 0-238, 827 - 951
+        
+        // Рельеф
+		DIRT = 0, // Clear tile
         // tile 1 ?
 
         /* Water */
@@ -28,7 +31,7 @@
         WOODS_LOW = TREEBASE,
         LASTTREE = 36,
         WOODS = 37,
-        UNUSED_TRASH1 = 38,
+        //UNUSED_TRASH1 = 38,
         UNUSED_TRASH2 = 39,
         WOODS_HIGH = UNUSED_TRASH2, // Why is an 'UNUSED' tile used?
         WOODS2 = 40,
@@ -36,10 +39,11 @@
         WOODS4 = 42,
         WOODS5 = 43,
 
-        /* Rubble (4 tiles) */
+        // Rubble Обломки 
         RUBBLE = 44,
         LASTRUBBLE = 47,
 
+        // Наводнение 
         FLOOD = 48,
         // tile 49, 50 ?
         LASTFLOOD = 51,
@@ -54,6 +58,8 @@
         FIRE = 56,
         FIREBASE = FIRE,
         LASTFIRE = 63,
+
+        // Дорога
 
         HBRIDGE = 64, // Horizontal bridge
         ROADBASE = HBRIDGE,
@@ -92,8 +98,8 @@
         LASTROAD = 206,
         BRWXXX7 = 207,
 
-        /* Power lines */
-        HPOWER = 208,
+		/* Линии электропередач */
+		HPOWER = 208,
         VPOWER = 209,
         LHPOWER = 210,
         LVPOWER = 211,
@@ -113,7 +119,7 @@
 
         UNUSED_TRASH6 = 223,
 
-        /* Rail */
+        /* Rail (железная дорога) */
         HRAIL = 224,
         VRAIL = 225,
         LHRAIL = 226,
@@ -132,7 +138,7 @@
         RAILBASE = HRAIL,
         LASTRAIL = 238,
 
-        ROADVPOWERH = 239, /* bogus? */
+        //ROADVPOWERH = 239, /* bogus? */
 
         // Residential zone tiles
 
@@ -143,25 +149,67 @@
         LHTHR = HOUSE,
         HHTHR = 260,
 
-        RZB = 265, // center tile first 3x3 tile residential
+        RZB = 265, // center tile first 3x3 tile residential 
+		// R1 - 261-269 - 16
+		// R2 - 270-278 - 24
+		// R3 - 279-287 - 32
+		// R4 - 288-296 - 40
+		// R5 - 298-305 - 16
+		// R6 - 307-314 - 24
+		// R7 - 316-323 - 32
+		// R8 - 324-332 - 40
+		// R9  - 333-341 - 16
+		// R10 - 342-350 - 24
+		// R11 - 351-359 - 32
+		// R12 - 360-368 - 40
+		// R13 - 369-377 - 16
+		// R14 - 378-386 - 24
+		// R15 - 387-395 - 32
+		// R16 - 396-404 - 40
 
-        HOSPITALBASE = 405, // Center of hospital (tiles 405--413)
+		HOSPITALBASE = 405, // Center of hospital (tiles 405--413)
         HOSPITAL = 409, // Center of hospital (tiles 405--413)
 
-        CHURCHBASE = 414, // Center of church (tiles 414--422)
-        CHURCH0BASE = 414, // numbered alias
+        //CHURCHBASE = 414, // Center of church (tiles 414--422)
+        //CHURCH0BASE = 414, // numbered alias
         CHURCH = 418, // Center of church (tiles 414--422)
-        CHURCH0 = 418, // numbered alias
+        //CHURCH0 = 418, // numbered alias
 
         // Commercial zone tiles
 
         COMBASE = 423, // Empty commercial, tiles 423--431
                        // tile 424 -- 426 ?
         COMCLR = 427,
-        // tile 428 -- 435 ?
-        CZB = 436,
+		// tile 428 -- 435 ?
+
+		// C0  - 423 - 431 - 0
+		// C1  - 432 - 440 - 1
+		// C2  - 441 - 449 - 2
+		// C3  - 450 - 458 - 3
+		// C4  - 459 - 467 - 4
+		// C5  - 468 - 476 - 5
+		// C6  - 477 - 485 - 1
+		// C7  - 486 - 494 - 2
+		// C8  - 495 - 503 - 3
+		// C9  - 504 - 512 - 4
+		// C10 - 513 - 521 - 5
+		// C11 - 522 - 530 - 1
+		// C12 - 531 - 539 - 2
+		// C13 - 540 - 548 - 3
+		// C14 - 549 - 557 - 4
+		// C15 - 558 - 566 - 5
+		// C16 - 567 - 575 - 1
+		// C17 - 576 - 584 - 2
+		// C18 - 585 - 593 - 3 
+		// C19 - 594 - 602 - 4
+		// C20 - 603 - 611 - 5
+
+
+		CZB = 436,
         // tile 437 -- 608 ?
-        COMLAST = 609,
+
+
+        // COMLAST = 609,
         // tile 610, 611 ?
 
         // Industrial zone tiles.
@@ -169,8 +217,18 @@
         INDCLR = 616, // Center tile of empty industrial zone.
         LASTIND = 620, // Last tile of empty industrial zone.
 
-        // Industrial zone population 0, value 0: 621 -- 629
-        IND1 = 621, // Top-left tile of first non-empty industry zone.
+		// I - 612 - 620
+		// I1 - 621 - 629 - 1
+		// I2 - 630 - 638 - 2
+		// I3 - 639 - 647 - 3
+		// I4 - 648 - 656 - 4
+		// I5 - 657 - 665 - 1
+		// I6 - 666 - 674 - 2
+		// I7 - 675 - 683 - 3
+		// I8 - 684 - 692 - 4
+
+		// Industrial zone population 0, value 0: 621 -- 629
+		IND1 = 621, // Top-left tile of first non-empty industry zone.
         IZB = 625, // Center tile of first non-empty industry zone.
 
         // Industrial zone population 1, value 0: 630 -- 638
@@ -195,76 +253,73 @@
         IND8 = 686,
         IND9 = 689,
 
-        // Seaport
+        // Seaport (4x4) 693 - 708
         PORTBASE = 693, // Top-left tile of the seaport.
         PORT = 698, // Center tile of the seaport.
-        LASTPORT = 708, // Last tile of the seaport.
+        //LASTPORT = 708, // Last tile of the seaport.
 
-        AIRPORTBASE = 709,
-        // tile 710 ?
+        // Airport (6x6) 709 - 744
+        //AIRPORTBASE = 709,
         RADAR = 711,
-        // tile 712 -- 715 ?
         AIRPORT = 716,
-        // tile 717 -- 744 ?
 
-        // Coal power plant (4x4).
-        COALBASE = 745, // First tile of coal power plant.
+        // Coal power plant (4x4) 745-760
+        //COALBASE = 745, // First tile of coal power plant.
         POWERPLANT = 750, // 'Center' tile of coal power plant.
         LASTPOWERPLANT = 760, // Last tile of coal power plant.
 
-        // Fire station (3x3).
-        FIRESTBASE = 761, // First tile of fire station.
+        // Fire station (3x3) 761-769
+        //FIRESTBASE = 761, // First tile of fire station.
         FIRESTATION = 765, // 'Center tile' of fire station.
-        // 769 last tile fire station.
+						   // 769 last tile fire station.
 
-        POLICESTBASE = 770,
-        // tile 771 -- 773 ?
+		// Police station (3x3) 770-778
+		POLICESTBASE = 770,
         POLICESTATION = 774,
-        // tile 775 -- 778 ?
 
-        // Stadium (4x4).
-        STADIUMBASE = 779, // First tile stadium.
+        // StadiumEmpty (4x4) 779 - 794
+        //STADIUMBASE = 779, // First tile stadium.
         STADIUM = 784, // 'Center tile' stadium.
-        // Last tile stadium 794.
 
-        // tile 785 -- 799 ?
-        FULLSTADIUM = 800,
-        // tile 801 -- 810 ?
+		// StadiumFull (4x4) 795 - 810
+		FULLSTADIUM = 800,
 
-        // Nuclear power plant (4x4).
-        NUCLEARBASE = 811, // First tile nuclear power plant.
+        // Nuclear power plant (4x4) 811 - 826
+        //NUCLEARBASE = 811, // First tile nuclear power plant.
         NUCLEAR = 816, // 'Center' tile nuclear power plant.
         LASTZONE = 826, // Also last tile nuclear power plant.
 
+        // Знак "нет электричества"
         LIGHTNINGBOLT = 827,
+
         HBRDG0 = 828,
         HBRDG1 = 829,
         HBRDG2 = 830,
         HBRDG3 = 831,
         HBRDG_END = 832,
-        RADAR0 = 832,
-        RADAR1 = 833,
-        RADAR2 = 834,
-        RADAR3 = 835,
-        RADAR4 = 836,
-        RADAR5 = 837,
-        RADAR6 = 838,
-        RADAR7 = 839,
-        FOUNTAIN = 840,
+        //RADAR0 = 832,
+        //RADAR1 = 833,
+        //RADAR2 = 834,
+        //RADAR3 = 835,
+        //RADAR4 = 836,
+        //RADAR5 = 837,
+        //RADAR6 = 838,
+        //RADAR7 = 839,
+        //FOUNTAIN = 840,
         // tile 841 -- 843: fountain animation.
-        INDBASE2 = 844,
-        TELEBASE = 844,
+        //INDBASE2 = 844,
+        //TELEBASE = 844,
         // tile 845 -- 850 ?
-        TELELAST = 851,
+        //TELELAST = 851,
         SMOKEBASE = 852,
         // tile 853 -- 859 ?
-        TINYEXP = 860,
+        //TINYEXP = 860,
         // tile 861 -- 863 ?
         SOMETINYEXP = 864,
         // tile 865 -- 866 ?
         LASTTINYEXP = 867,
         // tile 868 -- 882 ?
-        TINYEXPLAST = 883,
+        //TINYEXPLAST = 883,
         // tile 884 -- 915 ?
 
         COALSMOKE1 = 916, // Chimney animation at coal power plant (2, 0).
@@ -279,19 +334,19 @@
         COALSMOKE4 = 928, // Chimney animation at coal power plant (3, 1).
                           // 931 last animation tile for chimney at coal power plant (3, 1).
 
-        FOOTBALLGAME1 = 932,
+        //FOOTBALLGAME1 = 932,
         // tile 933 -- 939 ?
-        FOOTBALLGAME2 = 940,
+        //FOOTBALLGAME2 = 940,
         // tile 941 -- 947 ?
         VBRDG0 = 948,
         VBRDG1 = 949,
         VBRDG2 = 950,
         VBRDG3 = 951,
 
-        NUKESWIRL1 = 952,
-        NUKESWIRL2 = 953,
-        NUKESWIRL3 = 954,
-        NUKESWIRL4 = 955,
+        //NUKESWIRL1 = 952,
+        //NUKESWIRL2 = 953,
+        //NUKESWIRL3 = 954,
+        //NUKESWIRL4 = 955,
 
         // Tiles 956-959 unused (originally)
         TILE_COUNT     = 960,

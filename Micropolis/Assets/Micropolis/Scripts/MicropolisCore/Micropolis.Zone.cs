@@ -507,8 +507,8 @@ namespace MicropolisCore
                         if (((cityTime + pos.posX + pos.posY) & 31) == 0)
                         {
                             drawStadium(pos, (ushort) MapTileCharacters.FULLSTADIUM);
-                            map[pos.posX + 1,pos.posY] = (ushort) MapTileCharacters.FOOTBALLGAME1 + (ushort) MapTileBits.ANIMBIT;
-                            map[pos.posX + 1,pos.posY + 1] = (ushort) MapTileCharacters.FOOTBALLGAME2 + (ushort) MapTileBits.ANIMBIT;
+                            //map[pos.posX + 1,pos.posY] = (ushort) MapTileCharacters.FOOTBALLGAME1 + (ushort) MapTileBits.ANIMBIT;
+                            //map[pos.posX + 1,pos.posY + 1] = (ushort) MapTileCharacters.FOOTBALLGAME2 + (ushort) MapTileBits.ANIMBIT;
                         }
                     }
 
@@ -536,7 +536,7 @@ namespace MicropolisCore
                     }
 
                     // If powered, display a rotating radar
-                    if (powerOn)
+                    /*if (powerOn)
                     {
                         if ((ushort)(map[pos.posX + 1,pos.posY - 1] & (ushort) MapTileBits.LOMASK) == 
                             (ushort) MapTileCharacters.RADAR)
@@ -547,7 +547,7 @@ namespace MicropolisCore
                     else
                     {
                         map[pos.posX + 1,pos.posY - 1] = (ushort)MapTileCharacters.RADAR + (ushort)MapTileBits.CONDBIT + (ushort) MapTileBits.BURNBIT;
-                    }
+                    }*/
 
                     if (powerOn)
                     { 
