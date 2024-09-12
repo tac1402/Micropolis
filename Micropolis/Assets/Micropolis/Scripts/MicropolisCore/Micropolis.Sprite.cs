@@ -4,6 +4,7 @@ namespace MicropolisCore
 {
     public partial class Micropolis
     {
+        /*
         /// <summary>
         /// Create and initialize a sprite.
         /// </summary>
@@ -26,7 +27,7 @@ namespace MicropolisCore
         public void initSprite(SimSprite sprite, int x, int y)
         {
             throw new NotImplementedException();
-        }
+        }*/
 
         /// <summary>
         /// Destroy all sprites by de-activating them all (setting their frame to 0).
@@ -45,7 +46,7 @@ namespace MicropolisCore
         /// <param name="sprite">Sprite to destroy.</param>
         public void destroySprite(SimSprite sprite)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         /// <summary>
@@ -66,6 +67,7 @@ namespace MicropolisCore
             }
         }
 
+        /*
         /// <summary>
         /// Make a sprite either by re-using the old one, or by making a new one.
         /// </summary>
@@ -150,7 +152,7 @@ namespace MicropolisCore
         public bool checkSpriteCollision(SimSprite s1, SimSprite s2)
         {
             throw new NotImplementedException();
-        }
+        }*/
 
         /// <summary>
         /// Move all sprites.
@@ -224,7 +226,7 @@ namespace MicropolisCore
         /// <param name="sprite">Train sprite.</param>
         public void doTrainSprite(SimSprite sprite)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         /// <summary>
@@ -233,7 +235,7 @@ namespace MicropolisCore
         /// <param name="sprite">Helicopter sprite.</param>
         public void doCopterSprite(SimSprite sprite)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         /// <summary>
@@ -242,7 +244,7 @@ namespace MicropolisCore
         /// <param name="sprite">Airplane sprite</param>
         public void doAirplaneSprite(SimSprite sprite)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         /// <summary>
@@ -251,7 +253,7 @@ namespace MicropolisCore
         /// <param name="sprite">Ship sprite</param>
         public void doShipSprite(SimSprite sprite)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         /// <summary>
@@ -279,7 +281,7 @@ namespace MicropolisCore
         /// <param name="sprite">Monster sprite</param>
         public void doMonsterSprite(SimSprite sprite)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         /// <summary>
@@ -288,7 +290,7 @@ namespace MicropolisCore
         /// <param name="sprite">Tornado sprite to move.</param>
         public void doTornadoSprite(SimSprite sprite)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         /// <summary>
@@ -297,7 +299,7 @@ namespace MicropolisCore
         /// <param name="sprite">Fire sprite.</param>
         public void doExplosionSprite(SimSprite sprite)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         /// <summary>
@@ -306,9 +308,10 @@ namespace MicropolisCore
         /// <param name="sprite">Bus sprite</param>
         public void doBusSprite(SimSprite sprite)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
+        /*
         /// <summary>
         /// Can one drive at the specified tile?
         /// </summary>
@@ -332,7 +335,7 @@ namespace MicropolisCore
         public bool checkWet(int x)
         {
             throw new NotImplementedException();
-        }
+        }*/
 
         /// <summary>
         /// Destroy a map tile.
@@ -341,7 +344,7 @@ namespace MicropolisCore
         /// <param name="oy">Y coordinate in pixels.</param>
         public void destroyMapTile(int ox, int oy)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         /// <summary>
@@ -352,7 +355,7 @@ namespace MicropolisCore
         /// <param name="ch">Map character at (Xloc, Yloc).</param>
         public void startFireInZone(int Xloc, int Yloc, int ch)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         /// <summary>
@@ -362,7 +365,7 @@ namespace MicropolisCore
         /// <param name="y">Y coordinate in map coordinate.</param>
         public void startFire(int x, int y)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         /// <summary>
@@ -372,7 +375,7 @@ namespace MicropolisCore
         /// <param name="y">Y coordinate in map coordinate.</param>
         public void generateTrain(int x, int y)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         /// <summary>
@@ -382,7 +385,7 @@ namespace MicropolisCore
         /// <param name="y">Y coordinate in map coordinate.</param>
         public void generateBus(int x, int y)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         /// <summary>
@@ -390,7 +393,7 @@ namespace MicropolisCore
         /// </summary>
         public void generateShip()
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         /// <summary>
@@ -400,7 +403,7 @@ namespace MicropolisCore
         /// <param name="y">Y coordinate in map coordinate.</param>
         public void makeShipHere(int x, int y)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         /// <summary>
@@ -408,7 +411,7 @@ namespace MicropolisCore
         /// </summary>
         public void makeMonster()
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         /// <summary>
@@ -418,7 +421,7 @@ namespace MicropolisCore
         /// <param name="y">Y coordinate in map coordinate.</param>
         public void makeMonsterAt(int x, int y)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         /// <summary>
@@ -429,7 +432,7 @@ namespace MicropolisCore
         /// <param name="pos">Start position in map coordinates.</param>
         public void generateCopter(Position pos)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         /// <summary>
@@ -440,7 +443,7 @@ namespace MicropolisCore
         /// <param name="pos">Start position in map coordinates.</param>
         public void generatePlane(Position pos)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         /// <summary>
@@ -448,7 +451,7 @@ namespace MicropolisCore
         /// </summary>
         public void makeTornado()
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         /// <summary>
@@ -458,7 +461,7 @@ namespace MicropolisCore
         /// <param name="y">Y coordinate of the explosion (in map coordinates).</param>
         public void makeExplosion(int x, int y)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         /// <summary>
@@ -468,7 +471,7 @@ namespace MicropolisCore
         /// <param name="y">Y coordinate of the explosion (in pixels).</param>
         public void makeExplosionAt(int x, int y)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
     }
 }
