@@ -22,7 +22,7 @@ public class TilemapConvert : MonoBehaviour
 			Directory.CreateDirectory(dirPath);
 		}
 
-		for (int i = 0; i < 640; i++)
+		for (int i = 0; i < 960; i++)
 		{
 			string p = "Assets/Resources/Exported Materials/" + string.Format("m_{0}", i) + ".mat";
 			Material m = AssetDatabase.LoadAssetAtPath<Material>(p);

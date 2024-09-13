@@ -15,6 +15,8 @@ namespace MicropolisGame
 
         public short simSpeed;
 
+        private City city;
+
         private void Awake()
         {
             _engine = MicropolisUnityEngine.CreateUnityEngine();
@@ -24,6 +26,9 @@ namespace MicropolisGame
         {
             _tileManager = new TileManager(_engine);
             _callbacks = new CallbackManager(_engine);
+            city = GetComponent<City>();
+            city.engine = _engine;
+            city.PreLoadTiles();
         }
 
         private void Update()
@@ -39,6 +44,7 @@ namespace MicropolisGame
             {
                 _engine.tickEngine();
                 _tileManager.Draw();
+                city.Draw();
             }
         }
 

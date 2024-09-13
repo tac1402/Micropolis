@@ -71,6 +71,9 @@ namespace MicropolisGame
                     // the y value here and offset by 1 so we start at 0, -1 instead of 0, 0 in the grid
                     var offset = y * -1 - 1;
                     _mapLayer.SetTile(new Vector3Int(x, offset, 0), _tileEngine.GetTile(tileId));
+
+                    
+
                 }
             }
         }
