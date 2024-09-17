@@ -173,7 +173,7 @@ namespace MicropolisCore
             mapSerial++;
             callback("update", "s", "map"); // new
         }
-
+        /*
         /// <summary>
         /// Instruct the front-end to make a sound.
         /// </summary>
@@ -192,7 +192,7 @@ namespace MicropolisCore
             {
                 // TODO callback("makeSound", "ssdd", channel, sound, x, y);
             }
-        }
+        }*/
 
         /// <summary>
         /// Get a tile from the map.
@@ -200,15 +200,15 @@ namespace MicropolisCore
         /// <param name="x">X coordinate of the position to get, 0 to WORLD_W.</param>
         /// <param name="y">Y coordinate of the position to get, 0 to WORLD_H.</param>
         /// <returns>Value of the map at the given position.</returns>
-        public int getTile(int x, int y)
+        /*public int getTile(int x, int y)
         {
             if (!Position.testBounds((short) x, (short) y))
             {
                 return (int) MapTileCharacters.DIRT;
             }
 
-            return map[x, y];
-        }
+            return oldMap[x, y];
+        }*/
 
         /// <summary>
         /// Set a tile into the map.
@@ -216,16 +216,16 @@ namespace MicropolisCore
         /// <param name="x">X coordinate of the position to get, 0 to WORLD_W.</param>
         /// <param name="y">Y coordinate of the position to get, 0 to WORLD_H.</param>
         /// <param name="tile">the tile value to set.</param>
-        public void setTile(int x, int y, int tile)
+        /*public void setTile(int x, int y, int tile)
         {
             if (!Position.testBounds((short) x, (short) y))
             {
                 return;
             }
 
-            map[x, y] = (ushort) tile;
-        }
-
+            oldMap[x, y] = (ushort) tile;
+        }*/
+        /*
         /// <summary>
         /// Get a value from the power grid map.
         /// </summary>
@@ -479,6 +479,6 @@ namespace MicropolisCore
         public void setPoliceCoverage(int x, int y, int coverage)
         {
             policeStationEffectMap.set(x, y, (short) coverage);
-        }
+        }*/
     }
 }

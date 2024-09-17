@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using UnityEngine;
+using System.Collections.Generic;
 
 namespace MicropolisCore
 {
@@ -344,12 +345,14 @@ namespace MicropolisCore
         /// 
         /// Map[120][100]
         /// </summary>
-        public ushort[,] map;
+        //public ushort[,] oldMap;
 
-        /// <summary>
-        /// 10 year residential history maximum value.
-        /// </summary>
-        private short resHist10Max;
+		public Dictionary<Vector3, TileInfo> map = new Dictionary<Vector3, TileInfo>();
+
+		/// <summary>
+		/// 10 year residential history maximum value.
+		/// </summary>
+		private short resHist10Max;
 
         /// <summary>
         /// 120 year residential history maximum value.
@@ -795,8 +798,8 @@ namespace MicropolisCore
         public bool simPaused;
 
         private int simPausedSpeed;
-        protected bool tilesAnimated;
-        protected bool doAnimation;
+        //protected bool tilesAnimated;
+        //protected bool doAnimation;
         private bool doMessages;
         private bool doNotices;
 
@@ -1182,8 +1185,8 @@ namespace MicropolisCore
             heatRule = 0;
             heatWrap = 3;
             cityFileName = "";
-            tilesAnimated = false;
-            doAnimation = true;
+            //tilesAnimated = false;
+            //doAnimation = true;
             doMessages = true;
             doNotices = true;
             cityPopLast = 0;

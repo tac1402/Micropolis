@@ -10,7 +10,7 @@ namespace MicropolisGame
     public class GameManager : MonoBehaviour
     {
         private MicropolisUnityEngine _engine;
-        private TileManager _tileManager;
+        //private TileManager _tileManager;
         private CallbackManager _callbacks;
 
         public short simSpeed;
@@ -24,7 +24,7 @@ namespace MicropolisGame
 
         private void Start()
         {
-            _tileManager = new TileManager(_engine);
+            //_tileManager = new TileManager(_engine);
             _callbacks = new CallbackManager(_engine);
             city = GetComponent<City>();
             city.engine = _engine;
@@ -43,7 +43,7 @@ namespace MicropolisGame
             if (_engine.simSpeed != 0)
             {
                 _engine.tickEngine();
-                _tileManager.Draw();
+                //_tileManager.Draw();
                 city.Draw();
             }
         }
@@ -118,7 +118,7 @@ namespace MicropolisGame
             // TODO let the user pick from the list of tilesets
             // for now just randomly pick a tileset
             var tileset = _engine.tilesets[Random.Range(0, _engine.tilesets.Count)];
-            _tileManager.Engine.LoadTileset(tileset.FolderName);
+            //_tileManager.Engine.LoadTileset(tileset.FolderName);
             Resume();
         }
 

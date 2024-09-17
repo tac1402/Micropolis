@@ -1,4 +1,5 @@
-﻿using System;
+﻿using UnityEngine;
+using System;
 
 namespace MicropolisCore
 {
@@ -162,7 +163,8 @@ namespace MicropolisCore
             {
                 for (y = 0; y < (WORLD_H - 1); y++)
                 {
-                    if ((map[x, y] & (ushort) MapTileBits.LOMASK) == (ushort) MapTileCharacters.NUCLEAR)
+                    //if ((oldMap[x, y] & (ushort) MapTileBits.LOMASK) == (ushort) MapTileCharacters.NUCLEAR)
+                    if (map[new Vector3(x, 0, y)].Id == (ushort)MapTileCharacters.NUCLEAR)
                     {
                         doMeltdown(new Position(x, y));
                         return;
@@ -187,8 +189,9 @@ namespace MicropolisCore
             {
                 for (int y = pos.posY - 1; y < pos.posY + 3; y++)
                 {
-                    map[x,y] = randomFire();
-                }
+                    //oldMap[x,y] = randomFire();
+                    map[new Vector3(x, 0, y)].Id = randomFire();
+				}
             }
 
             // Add lots of radiation tiles around the plant
@@ -204,17 +207,19 @@ namespace MicropolisCore
                     continue;
                 }
 
-                ushort t = map[x,y];
+                //ushort t = oldMap[x,y];
+				TileInfo t = map[new Vector3(x, 0, y)];
 
-                if ((t & (ushort) MapTileBits.ZONEBIT) != 0)
+				if (t.IsCenter == true)
                 {
                     continue; // Ignore zones
                 }
 
-                if ((t & (ushort) MapTileBits.BURNBIT) != 0 || t == (ushort) MapTileCharacters.DIRT)
+                if (t.CanLit == true || t.Id == (ushort) MapTileCharacters.DIRT)
                 {
-                    map[x,y] = (ushort) MapTileCharacters.RADTILE; // Make tile radio-active
-                }
+                    //oldMap[x,y] = (ushort) MapTileCharacters.RADTILE; // Make tile radio-active
+                    map[new Vector3(x, 0, y)].Id = (ushort)MapTileCharacters.RADTILE; // Make tile radio-active
+				}
 
             }
 
@@ -267,19 +272,23 @@ namespace MicropolisCore
                 x = getRandom(WORLD_W - 1);
                 y = getRandom(WORLD_H - 1);
 
-                if (vulnerable(map[x,y]))
+                //if (vulnerable(oldMap[x,y]))
+                if (vulnerable(map[new Vector3(x, 0, y)]))
                 {
-
                     if ((z & 0x3) != 0)
                     { 
                         // 3 of 4 times reduce to rubble
-                        map[x,y] = randomRubble();
-                    }
-                    else
+                        //oldMap[x,y] = randomRubble();
+						map[new Vector3(x, 0, y)].Id = randomRubble();
+						map[new Vector3(x, 0, y)].IsBulldozable = true;
+					}
+					else
                     {
                         // 1 of 4 times start fire
-                        map[x,y] = randomFire();
-                    }
+                        //oldMap[x,y] = randomFire();
+						map[new Vector3(x, 0, y)].Id = randomFire();
+
+					}
                 }
             }
         }
@@ -289,19 +298,21 @@ namespace MicropolisCore
         /// </summary>
         public void setFire()
         {
-            short x, y, z;
+            short x, y;
 
             x = getRandom(WORLD_W - 1);
             y = getRandom(WORLD_H - 1);
-            z = (short) map[x,y];
+            //z = (short) oldMap[x,y];
+            TileInfo t = map[new Vector3(x, 0, y)];
 
-            if ((z & (ushort) MapTileBits.ZONEBIT) == 0)
+            if (t.IsCenter == false)
             {
-                z = (short)(z & (ushort) MapTileBits.LOMASK);
-                if (z > (ushort) MapTileCharacters.LHTHR && z < (ushort) MapTileCharacters.LASTZONE)
+                //z = (short)(z & (ushort) MapTileBits.LOMASK);
+                if (t.Id > (ushort) MapTileCharacters.LHTHR && t.Id < (ushort) MapTileCharacters.LASTZONE)
                 {
-                    map[x,y] = randomFire();
-                    sendMessage((short) MessageNumber.MESSAGE_FIRE_REPORTED, x, y, true);
+                    //oldMap[x,y] = randomFire();
+					map[new Vector3(x, 0, y)].Id = randomFire();
+					sendMessage((short) MessageNumber.MESSAGE_FIRE_REPORTED, x, y, true);
                 }
             }
         }
@@ -309,7 +320,7 @@ namespace MicropolisCore
         /// <summary>
         /// Start a fire at a random place, requested by user.
         /// </summary>
-        public void makeFire()
+        /*public void makeFire()
         {
             short t, x, y, z;
 
@@ -317,31 +328,32 @@ namespace MicropolisCore
             {
                 x = getRandom(WORLD_W - 1);
                 y = getRandom(WORLD_H - 1);
-                z = (short) map[x,y];
+                z = (short) oldMap[x,y];
 
-                if ((z & (short) MapTileBits.ZONEBIT) == 0 && (z & (ushort) MapTileBits.BURNBIT) != 0)
+                if ((z & (short) MapTileBits.IsCenter) == 0 && (z & (ushort) MapTileBits.CanLit) != 0)
                 {
                     z = (short)(z & (ushort) MapTileBits.LOMASK);
                     if ((z > 21) && (z < (ushort) MapTileCharacters.LASTZONE))
                     {
-                        map[x,y] = randomFire();
-                        sendMessage((short) MessageNumber.MESSAGE_FIRE_REPORTED, x, y);
+                        //oldMap[x,y] = randomFire();
+						map[new Vector3(x, 0, y)].Id = randomFire();
+						sendMessage((short) MessageNumber.MESSAGE_FIRE_REPORTED, x, y);
                         return;
                     }
                 }
             }
-        }
+        }*/
 
         /// <summary>
         /// Is tile vulnerable for an earthquake?
         /// </summary>
         /// <param name="tem">Tile data</param>
         /// <returns>Function returns true if tile is vulnerable, and false if not</returns>
-        public bool vulnerable(int tem)
+        public bool vulnerable(TileInfo tileInfo)
         {
-            int tem2 = tem & (ushort) MapTileBits.LOMASK;
+            //int tem2 = tem & (ushort) MapTileBits.LOMASK;
 
-            if (tem2 < (int) MapTileCharacters.RESBASE || tem2 > (int) MapTileCharacters.LASTZONE || (tem & (int) MapTileBits.ZONEBIT) != 0)
+            if (tileInfo.Id < (int) MapTileCharacters.RESBASE || tileInfo.Id > (int) MapTileCharacters.LASTZONE || tileInfo.IsCenter == true)
             {
                 return false;
             }
@@ -357,16 +369,17 @@ namespace MicropolisCore
         {
             short[] Dx = { 0, 1, 0, -1 };
             short[] Dy = { -1, 0, 1, 0 };
-            short xx, yy, c;
+            short xx, yy;
             short z, t, x, y;
 
             for (z = 0; z < 300; z++)
             {
                 x = getRandom(WORLD_W - 1);
                 y = getRandom(WORLD_H - 1);
-                c = (short)(map[x,y] & (ushort) MapTileBits.LOMASK);
+                //c = (short)(oldMap[x,y] & (ushort) MapTileBits.LOMASK);
+				TileInfo c = map[new Vector3(x, 0, y)];
 
-                if (c > (short) MapTileCharacters.CHANNEL && c <= (short) MapTileCharacters.WATER_HIGH)
+				if (c.Id > (short) MapTileCharacters.CHANNEL && c.Id <= (short) MapTileCharacters.WATER_HIGH)
                 { 
                     /* if riveredge  */
                     for (t = 0; t < 4; t++)
@@ -375,14 +388,15 @@ namespace MicropolisCore
                         yy = (short) (y + Dy[t]);
                         if (Position.testBounds(xx, yy))
                         {
-                            c = (short) map[xx,yy];
+                            //c = (short) oldMap[xx,yy];
 
                             /* tile is floodable */
-                            if (c == (short) MapTileCharacters.DIRT
-                                || (c & ((short) MapTileBits.BULLBIT | (short) MapTileBits.BURNBIT)) == ((short) MapTileBits.BULLBIT | (short) MapTileBits.BURNBIT))
+                            if (c.Id == (short) MapTileCharacters.DIRT || c.IsBulldozable == true || c.CanLit == true)
+                                /*|| (c & ((short) MapTileBits.IsBulldozable | (short) MapTileBits.CanLit)) == ((short) MapTileBits.IsBulldozable | (short) MapTileBits.CanLit))*/
                             {
-                                map[xx,yy] = (ushort) MapTileCharacters.FLOOD;
-                                floodCount = 30;
+                                //oldMap[xx,yy] = (ushort) MapTileCharacters.FLOOD;
+								map[new Vector3(xx, 0, yy)].Id = (ushort)MapTileCharacters.FLOOD;
+								floodCount = 30;
                                 sendMessage((short) MessageNumber.MESSAGE_FLOODING_REPORTED, xx, yy, true);
                                 return;
                             }
@@ -415,19 +429,22 @@ namespace MicropolisCore
                         int yy = pos.posY + Dy[z];
                         if (Position.testBounds((short) xx, (short) yy))
                         {
-                            ushort c = map[xx,yy];
-                            ushort t = (ushort)(c & (ushort) MapTileBits.LOMASK);
+                            //ushort c = oldMap[xx,yy];
+                            //ushort t = (ushort)(c & (ushort) MapTileBits.LOMASK);
 
-                            if ((c & (ushort) MapTileBits.BURNBIT) == (ushort) MapTileBits.BURNBIT || c == (ushort) MapTileCharacters.DIRT
-                                || (t >= (ushort) MapTileCharacters.WOODS5 && t < (ushort) MapTileCharacters.FLOOD))
+                            TileInfo t = map[new Vector3(xx, 0, yy)];
+
+                            if (t.CanLit == true || t.Id == (ushort) MapTileCharacters.DIRT
+                                || (t.Id >= (ushort) MapTileCharacters.WOODS5 && t.Id < (ushort) MapTileCharacters.FLOOD))
                             {
-                                if ((c & (ushort) MapTileBits.ZONEBIT) == (ushort) MapTileBits.ZONEBIT)
+                                if (t.IsCenter == true)
                                 {
-                                    fireZone(new Position(xx, yy), c);
+                                    fireZone(new Position(xx, yy), t);
                                 }
-                                map[xx,yy] = (ushort) (MapTileCharacters.FLOOD + getRandom(2));
-                            }
-                        }
+                                //oldMap[xx,yy] = (ushort) (MapTileCharacters.FLOOD + getRandom(2));
+								map[new Vector3(xx, 0, yy)].Id = (ushort)(MapTileCharacters.FLOOD + getRandom(2));
+							}
+						}
                     }
                 }
             }
@@ -436,8 +453,9 @@ namespace MicropolisCore
                 if ((getRandom16() & 15) == 0)
                 { 
                     // 1/16 chance
-                    map[pos.posX,pos.posY] = (ushort) MapTileCharacters.DIRT;
-                }
+                    //oldMap[pos.posX,pos.posY] = (ushort) MapTileCharacters.DIRT;
+                    map[new Vector3(pos.posX,0, pos.posY)].Id = (ushort)MapTileCharacters.DIRT;
+				}
             }
         }
     }

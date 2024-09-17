@@ -1,4 +1,8 @@
-﻿using System;
+﻿using UnityEngine;
+using System;
+using UnityEngine.UIElements;
+using static UnityEditor.PlayerSettings;
+using UnityEngine.Tilemaps;
 
 namespace MicropolisCore
 {
@@ -23,10 +27,11 @@ namespace MicropolisCore
                 unpoweredZoneCount++;
             }
 
-            ushort tile = (ushort)(map[pos.posX,pos.posY] & (ushort) MapTileBits.LOMASK);
+            //ushort tile = (ushort)(oldMap[pos.posX,pos.posY] & (ushort) MapTileBits.LOMASK);
+			int tile = map[new Vector3(pos.posX, 0, pos.posY)].Id;
 
-            // Do special zones.
-            if (tile > (ushort) MapTileCharacters.PORTBASE)
+			// Do special zones.
+			if (tile > (ushort) MapTileCharacters.PORTBASE)
             {
                 doSpecialZone(pos, zonePowerFlag);
                 return;
@@ -66,11 +71,12 @@ namespace MicropolisCore
         {
             short tpop, zscore, TrfGood;
 
-            ushort tile = (ushort) (map[pos.posX,pos.posY] & (ushort) MapTileBits.LOMASK);
+            //ushort tile = (ushort) (oldMap[pos.posX,pos.posY] & (ushort) MapTileBits.LOMASK);
+			int tile = map[new Vector3(pos.posX, 0, pos.posY)].Id;
 
-            indZonePop++;
+			indZonePop++;
             setSmoke(pos, zonePower);
-            tpop = getIndZonePop(tile);
+            tpop = getIndZonePop((ushort)tile);
             indPop += tpop;
 
             if (tpop > getRandom(5))
@@ -187,9 +193,10 @@ namespace MicropolisCore
             short[] aniTabC = { (short)MapTileCharacters.IND1, 0, (short)MapTileCharacters.IND2, (short)MapTileCharacters.IND4, 0, 0, (short)MapTileCharacters.IND6, (short)MapTileCharacters.IND8 };
             short[] aniTabD = { (short)MapTileCharacters.IND1, 0, (short)MapTileCharacters.IND3, (short)MapTileCharacters.IND5, 0, 0, (short)MapTileCharacters.IND7, (short)MapTileCharacters.IND9 };
 
-            ushort tile = (ushort)(map[pos.posX, pos.posY] & (ushort) MapTileBits.LOMASK);
+            //ushort tile = (ushort)(oldMap[pos.posX, pos.posY] & (ushort) MapTileBits.LOMASK);
+			int tile = map[new Vector3(pos.posX, 0, pos.posY)].Id;
 
-            int z = (tile - (ushort) MapTileCharacters.IZB) >> 3;
+			int z = (tile - (ushort) MapTileCharacters.IZB) >> 3;
             z = z & 7;
 
             if (aniThis[z])
@@ -199,29 +206,33 @@ namespace MicropolisCore
 
                 if (Position.testBounds((short) xx, (short) yy))
                 {
-                    if (zonePower)
+					Vector3 position = new Vector3(xx, 0, yy);
+					if (zonePower)
                     {
                         // TODO Why do we assign the same map position twice?
                         // TODO Add SMOKEBASE into aniTabA and aniTabB tables?
-                        if ((map[xx, yy] & (ushort)MapTileBits.LOMASK) == aniTabC[z])
-                        {
-                            map[xx, yy] = (ushort)((ushort)MapTileBits.ASCBIT |
-                                                   ((ushort)MapTileCharacters.SMOKEBASE + (ushort)aniTabA[z]));
-                            map[xx, yy] = (ushort)((ushort)MapTileBits.ASCBIT |
-                                                   ((ushort)MapTileCharacters.SMOKEBASE + (ushort)aniTabB[z]));
-                        }
-                    }
-                    else
+						if (map[position].Id == aniTabC[z])
+						{
+							//oldMap[xx, yy] = (ushort)((ushort)MapTileBits.ASCBIT | ((ushort)MapTileCharacters.SMOKEBASE + (ushort)aniTabA[z]));
+							//oldMap[xx, yy] = (ushort)((ushort)MapTileBits.ASCBIT | ((ushort)MapTileCharacters.SMOKEBASE + (ushort)aniTabB[z]));
+                            map[position].Id = (ushort)MapTileCharacters.SMOKEBASE + (ushort)aniTabB[z];
+							map[position].CanConduct = true;
+							map[position].CanLit = true;
+						}
+					}
+					else
                     {
                         // TODO Why do we assign the same map position twice?
-                        if ((map[xx, yy] & (ushort)MapTileBits.LOMASK) == aniTabC[z])
+                        if (map[position].Id == aniTabC[z])
                         {
-                            map[xx, yy] = (ushort)((ushort)MapTileBits.REGBIT |
-                                                   ((ushort)MapTileCharacters.SMOKEBASE + (ushort)aniTabC[z]));
-                            map[xx, yy] = (ushort)((ushort)MapTileBits.REGBIT |
-                                                   ((ushort)MapTileCharacters.SMOKEBASE + (ushort)aniTabD[z]));
-                        }
-                    }
+                            //oldMap[xx, yy] = (ushort)((ushort)MapTileBits.REGBIT | ((ushort)MapTileCharacters.SMOKEBASE + (ushort)aniTabC[z]));
+                            //oldMap[xx, yy] = (ushort)((ushort)MapTileBits.REGBIT | ((ushort)MapTileCharacters.SMOKEBASE + (ushort)aniTabD[z]));
+
+							map[position].Id = (ushort)MapTileCharacters.SMOKEBASE + (ushort)aniTabD[z];
+							map[position].CanConduct = true;
+							map[position].CanLit = true;
+						}
+					}
                 }
             }
         }
@@ -236,10 +247,11 @@ namespace MicropolisCore
             short tpop, TrfGood;
             short zscore, locvalve, value;
 
-            ushort tile = (ushort) (map[pos.posX,pos.posY] & (ushort) MapTileBits.LOMASK);
+            //ushort tile = (ushort) (oldMap[pos.posX,pos.posY] & (ushort) MapTileBits.LOMASK);
+			int tile = map[new Vector3(pos.posX, 0, pos.posY)].Id;
 
-            comZonePop++;
-            tpop = getComZonePop(tile);
+			comZonePop++;
+            tpop = getComZonePop((ushort)tile);
             comPop += tpop;
 
             if (tpop > getRandom(5))
@@ -380,9 +392,10 @@ namespace MicropolisCore
             // Bigger numbers reduce chance of nuclear melt down
             short[] meltdownTable = { 30000, 20000, 10000 };
 
-            ushort tile = (ushort)(map[pos.posX,pos.posY] & (ushort) MapTileBits.LOMASK);
+            //ushort tile = (ushort)(oldMap[pos.posX,pos.posY] & (ushort) MapTileBits.LOMASK);
+			int tile = map[new Vector3(pos.posX, 0, pos.posY)].Id;
 
-            switch (tile)
+			switch (tile)
             {
 
                 case (ushort) MapTileCharacters.POWERPLANT:
@@ -609,12 +622,17 @@ namespace MicropolisCore
             {
                 for (x = center.posX - 1; x < center.posX + 3; x++)
                 {
-                    map[x,y] = (ushort)(z | (ushort) MapTileBits.BNCNBIT);
-                    z++;
+                    //oldMap[x,y] = (ushort)(z | (ushort) MapTileBits.BNCNBIT);
+					map[new Vector3(x, 0, y)].Id = z;
+					map[new Vector3(x, 0, y)].CanConduct = true;
+                    map[new Vector3(x, 0, y)].CanLit = true;
+					z++;
                 }
             }
 
-            map[center.posX,center.posY] |= (ushort)MapTileBits.ZONEBIT | (ushort)MapTileBits.PWRBIT;
+			//oldMap[center.posX, center.posY] |= (ushort)MapTileBits.ZONEBIT | (ushort)MapTileBits.PWRBIT;
+			map[new Vector3(center.posX, 0, center.posY)].IsCenter = true;
+			map[new Vector3(center.posX, 0, center.posY)].IsPower = true;
         }
 
         /// <summary>
@@ -632,11 +650,16 @@ namespace MicropolisCore
 
             for (short x = 0; x < 4; x++)
             {
-                map[pos.posX + dx[x],pos.posY + dy[x]] = (ushort)(
-                    SmTb[x] | (ushort)MapTileBits.ANIMBIT | (ushort)MapTileBits.CONDBIT |
-                    (ushort)MapTileBits.PWRBIT | (ushort)MapTileBits.BURNBIT);
-            }
-        }
+                //oldMap[pos.posX + dx[x],pos.posY + dy[x]] = (ushort)(SmTb[x] | (ushort)MapTileBits.CONDBIT |
+                //    (ushort)MapTileBits.PWRBIT | (ushort)MapTileBits.BURNBIT);
+
+                Vector3 position = new Vector3(pos.posX + dx[x], 0, pos.posY + dy[x]);
+				map[position].Id = SmTb[x];
+				map[position].IsPower = true;
+				map[position].CanConduct = true;
+				map[position].CanLit = true;
+			}
+		}
 
         /// <summary>
         /// Repair a zone at pos.
@@ -661,26 +684,26 @@ namespace MicropolisCore
 
                     if (Position.testBounds((short) xx, (short) yy))
                     {
+                        Vector3 position = new Vector3(xx, 0, yy);
 
-                        ushort mapValue = map[xx,yy];
+						//ushort mapValue = oldMap[xx,yy];
 
-                        if ((mapValue & (ushort) MapTileBits.ZONEBIT) != 0)
+                        if (map[position].IsCenter == true)
                         {
                             continue;
                         }
 
-                        if ((mapValue & (ushort) MapTileBits.ANIMBIT) != 0)
-                        {
-                            continue;
-                        }
+                        //ushort mapTile = (ushort)(mapValue & (ushort) MapTileBits.LOMASK);
 
-                        ushort mapTile = (ushort)(mapValue & (ushort) MapTileBits.LOMASK);
-
-                        if (mapTile < (ushort) MapTileCharacters.RUBBLE || mapTile >= (ushort) MapTileCharacters.ROADBASE)
+                        if (map[position].Id < (ushort) MapTileCharacters.RUBBLE || map[position].Id >= (ushort) MapTileCharacters.ROADBASE)
                         {
-                            map[xx,yy] = (ushort) (tile | (ushort) MapTileBits.CONDBIT | (ushort) MapTileBits.BURNBIT);
-                        }
-                    }
+                            //oldMap[xx,yy] = (ushort) (tile | (ushort) MapTileBits.CONDBIT | (ushort) MapTileBits.BURNBIT);
+
+                            map[position].Id = tile;
+							map[position].CanConduct = true;
+							map[position].CanLit = true;
+						}
+					}
                 }
             }
         }
@@ -691,9 +714,10 @@ namespace MicropolisCore
         /// <param name="pos">Position of the hospital or church.</param>
         private void doHospitalChurch(Position pos)
         {
-            ushort tile = (ushort)(map[pos.posX,pos.posY] & (ushort) MapTileBits.LOMASK);
+            //ushort tile = (ushort)(oldMap[pos.posX,pos.posY] & (ushort) MapTileBits.LOMASK);
+			int tile = map[new Vector3(pos.posX, 0, pos.posY)].Id;
 
-            if (tile == (ushort) MapTileCharacters.HOSPITAL)
+			if (tile == (ushort) MapTileCharacters.HOSPITAL)
             {
 
                 hospitalPop++;
@@ -722,7 +746,7 @@ namespace MicropolisCore
 
                 if ((cityTime & 15) == 0)
                 {
-                    repairZone(pos, tile, 3);
+                    repairZone(pos, (ushort)tile, 3);
                 }
 
                 if (needChurch == -1)
@@ -748,15 +772,16 @@ namespace MicropolisCore
 
             resZonePop++;
 
-            ushort tile = (ushort)(map[pos.posX, pos.posY] & (ushort) MapTileBits.LOMASK);
+            //ushort tile = (ushort)(oldMap[pos.posX, pos.posY] & (ushort) MapTileBits.LOMASK);
+			int tile = map[new Vector3(pos.posX, 0, pos.posY)].Id;
 
-            if (tile == (ushort) MapTileCharacters.FREEZ)
+			if (tile == (ushort) MapTileCharacters.FREEZ)
             {
                 tpop = doFreePop(pos);
             }
             else
             {
-                tpop = getResZonePop(tile);
+                tpop = getResZonePop((ushort)tile);
             }
 
             resPop += tpop;
@@ -826,9 +851,10 @@ namespace MicropolisCore
                 return;
             }
 
-            ushort tile = (ushort) (map[pos.posX, pos.posY] & (ushort) MapTileBits.LOMASK);
+            //ushort tile = (ushort) (oldMap[pos.posX, pos.posY] & (ushort) MapTileBits.LOMASK);
+			int tile = map[new Vector3(pos.posX, 0, pos.posY)].Id;
 
-            if (tile == (ushort) MapTileCharacters.FREEZ)
+			if (tile == (ushort) MapTileCharacters.FREEZ)
             {
                 if (pop < 8)
                 {
@@ -906,9 +932,13 @@ namespace MicropolisCore
 
                 if (Position.testBounds((short) xx, (short) yy))
                 {
-                    map[xx, yy] = (ushort)((ushort) MapTileCharacters.HOUSE + (ushort) MapTileBits.BLBNCNBIT + getRandom(2) + value * 3);
-                }
-            }
+                    //oldMap[xx, yy] = (ushort)((ushort) MapTileCharacters.HOUSE + (ushort) MapTileBits.BLBNCNBIT + getRandom(2) + value * 3);
+                    map[new Vector3(xx, 0, yy)].Id = (ushort)((ushort)MapTileCharacters.HOUSE + getRandom(2) + value * 3);
+					map[new Vector3(xx, 0, yy)].CanConduct = true;
+					map[new Vector3(xx, 0, yy)].CanLit = true;
+					map[new Vector3(xx, 0, yy)].IsBulldozable = true;
+				}
+			}
         }
 
         /// <summary>
@@ -919,14 +949,15 @@ namespace MicropolisCore
         /// <returns>Suitability.</returns>
         private short evalLot(int x, int y)
         {
-            short z, score;
+            short score;
             short[] DX = {0, 1, 0, -1};
             short[] DY = {-1, 0, 1, 0};
 
             // test for clear lot
-            z = (short) (map[x, y] & (ushort) MapTileBits.LOMASK);
+            //z = (short) (oldMap[x, y] & (ushort) MapTileBits.LOMASK);
+			int z = map[new Vector3(x, 0, y)].Id;
 
-            if (z > 0 && (z < (ushort) MapTileCharacters.RESBASE || z > (ushort) MapTileCharacters.RESBASE + 8))
+			if (z > 0 && (z < (ushort) MapTileCharacters.RESBASE || z > (ushort) MapTileCharacters.RESBASE + 8))
             {
                 return -1;
             }
@@ -938,9 +969,11 @@ namespace MicropolisCore
                 int xx = x + DX[z];
                 int yy = y + DY[z];
 
+                TileInfo tile = map[new Vector3 (xx, 0, yy)];
+
                 if (Position.testBounds((short) xx, (short) yy) &&
-                    map[xx, yy] != (ushort) MapTileCharacters.DIRT &&
-                    (ushort)(map[xx, yy] & (ushort) MapTileBits.LOMASK) <= (ushort) MapTileCharacters.LASTROAD)
+					tile.Id != (ushort) MapTileCharacters.DIRT &&
+					tile.Id <= (ushort) MapTileCharacters.LASTROAD)
                 {
                     score++; // look for road
                 }
@@ -984,9 +1017,9 @@ namespace MicropolisCore
 
                 if (Position.testBounds((short) xx, (short) yy))
                 {
-                    x = (short)(map[xx, yy] & (ushort) MapTileBits.LOMASK);
-
-                    if (x >= (ushort) MapTileCharacters.FLOOD && x < (ushort) MapTileCharacters.ROADBASE)
+                    //x = (short)(oldMap[xx, yy] & (ushort) MapTileBits.LOMASK);
+                    int t= map[new Vector3(xx, 0, yy)].Id;
+					if (t >= (ushort) MapTileCharacters.FLOOD && t < (ushort) MapTileCharacters.ROADBASE)
                     {
                         return false;
                     }
@@ -1000,16 +1033,21 @@ namespace MicropolisCore
 
                 if (Position.testBounds((short) xx, (short) yy))
                 {
-                    map[xx, yy] = (ushort)(baseValue + (ushort) MapTileBits.BNCNBIT);
-                }
+                    //oldMap[xx, yy] = (ushort)(baseValue + (ushort) MapTileBits.BNCNBIT);
+                    map[new Vector3(xx, 0, yy)].Id = baseValue;
+					map[new Vector3(xx, 0, yy)].CanConduct = true;
+					map[new Vector3(xx, 0, yy)].CanLit = true;
+				}
 
-                baseValue++;
+				baseValue++;
             }
 
             setZonePower(pos);
-            map[pos.posX, pos.posY] |= (ushort)MapTileBits.ZONEBIT + (ushort) MapTileBits.BULLBIT;
+            //oldMap[pos.posX, pos.posY] |= (ushort)MapTileBits.ZONEBIT + (ushort) MapTileBits.BULLBIT;
+			map[new Vector3(pos.posX, 0, pos.posY)].IsCenter = true;
+			map[new Vector3(pos.posX, 0, pos.posY)].IsBulldozable = true;
 
-            return true;
+			return true;
         }
 
         /// <summary>
@@ -1122,19 +1160,38 @@ namespace MicropolisCore
             if (pop == 16)
             {
                 incRateOfGrowth(pos, -8);
-                map[pos.posX,pos.posY] = (ushort) MapTileCharacters.FREEZ | (ushort)MapTileBits.BLBNCNBIT | (ushort)MapTileBits.ZONEBIT;
-                for (x = (short) (pos.posX - 1); x <= pos.posX + 1; x++)
+                //oldMap[pos.posX,pos.posY] = (ushort) MapTileCharacters.FREEZ | (ushort)MapTileBits.BLBNCNBIT | (ushort)MapTileBits.IsCenter;
+
+                Vector3 position = new Vector3(pos.posX, 0, pos.posY);
+                map[position].Id = (ushort)MapTileCharacters.FREEZ;
+				map[position].IsCenter = true;
+				map[position].IsBulldozable = true;
+				map[position].CanConduct = true;
+				map[position].CanLit = true;
+
+
+				for (x = (short) (pos.posX - 1); x <= pos.posX + 1; x++)
                 {
                     for (y = (short) (pos.posY - 1); y <= pos.posY + 1; y++)
                     {
                         if (Position.testBounds(x, y))
                         {
-                            if ((map[x,y] & (ushort) MapTileBits.LOMASK) != (ushort) MapTileCharacters.FREEZ)
+							Vector3 position2 = new Vector3(x, 0, y);
+
+							/*if ((oldMap[x,y] & (ushort) MapTileBits.LOMASK) != (ushort) MapTileCharacters.FREEZ)
                             {
-                                map[x,y] = (ushort)(MapTileCharacters.LHTHR + value + getRandom(2) + (ushort) MapTileBits.BLBNCNBIT);
-                            }
-                        }
-                    }
+                                oldMap[x,y] = (ushort)(MapTileCharacters.LHTHR + value + getRandom(2) + (ushort) MapTileBits.BLBNCNBIT);
+                            }*/
+							if (map[position2].Id != (ushort)MapTileCharacters.FREEZ)
+							{
+								//oldMap[x, y] = (ushort)(MapTileCharacters.LHTHR + value + getRandom(2) + (ushort)MapTileBits.BLBNCNBIT);
+								map[position2].Id = (ushort)(MapTileCharacters.LHTHR + value + getRandom(2));
+								map[position2].IsBulldozable = true;
+								map[position2].CanConduct = true;
+								map[position2].CanLit = true;
+							}
+						}
+					}
                 }
             }
 
@@ -1148,11 +1205,18 @@ namespace MicropolisCore
                     {
                         if (Position.testBounds(x, y))
                         {
-                            loc = (short)(map[x,y] & (ushort) MapTileBits.LOMASK);
-                            if ((loc >= (ushort) MapTileCharacters.LHTHR) && (loc <= (ushort) MapTileCharacters.HHTHR))
+                            //loc = (short)(oldMap[x,y] & (ushort) MapTileBits.LOMASK);
+							loc = (short)map[new Vector3(x, 0, y)].Id;
+							if ((loc >= (ushort) MapTileCharacters.LHTHR) && (loc <= (ushort) MapTileCharacters.HHTHR))
                             {
-                                map[x,y] = (ushort)(Brdr[z] + (ushort) MapTileBits.BLBNCNBIT + (ushort) MapTileCharacters.FREEZ - 4);
-                                return;
+                                //oldMap[x,y] = (ushort)(Brdr[z] + (ushort) MapTileBits.BLBNCNBIT + (ushort) MapTileCharacters.FREEZ - 4);
+
+								map[new Vector3(x, 0, y)].Id = (ushort)(Brdr[z] + (ushort)MapTileCharacters.FREEZ - 4);
+								map[new Vector3(x, 0, y)].IsBulldozable = true;
+								map[new Vector3(x, 0, y)].CanLit = true;
+								map[new Vector3(x, 0, y)].CanConduct = true;
+
+								return;
                             }
                         }
                         z++;
@@ -1219,8 +1283,9 @@ namespace MicropolisCore
                 {
                     if (x >= 0 && x < WORLD_W && y >= 0 && y < WORLD_H)
                     {
-                        ushort tile = (ushort)(map[x,y] & (ushort) MapTileBits.LOMASK);
-                        if (tile >= (ushort) MapTileCharacters.LHTHR && tile <= (ushort) MapTileCharacters.HHTHR)
+                        //ushort tile = (ushort)(oldMap[x,y] & (ushort) MapTileBits.LOMASK);
+						ushort tile = (ushort)map[new Vector3(x, 0, y)].Id;
+						if (tile >= (ushort) MapTileCharacters.LHTHR && tile <= (ushort) MapTileCharacters.HHTHR)
                         {
                             count++;
                         }
@@ -1238,24 +1303,32 @@ namespace MicropolisCore
         /// <returns>Does the tile have power?</returns>
         private bool setZonePower(Position pos)
         {
-            ushort mapValue = map[pos.posX, pos.posY];
-            ushort tile = (ushort)(mapValue & (ushort) MapTileBits.LOMASK);
+           // ushort mapValue = oldMap[pos.posX, pos.posY];
+            //ushort tile = (ushort)(mapValue & (ushort) MapTileBits.LOMASK);
 
-            if (tile == (ushort) MapTileCharacters.NUCLEAR || tile == (ushort) MapTileCharacters.POWERPLANT)
+			Vector3 position = new Vector3(pos.posX, 0, pos.posY);
+
+			if (map[position].Id == (ushort) MapTileCharacters.NUCLEAR || map[position].Id == (ushort) MapTileCharacters.POWERPLANT)
             {
-                map[pos.posX, pos.posY] = (ushort)(mapValue | (ushort) MapTileBits.PWRBIT);
-                return true;
+                //oldMap[pos.posX, pos.posY] = (ushort)(mapValue | (ushort) MapTileBits.PWRBIT);
+                //map[position].Id = mapValue;
+				map[position].IsPower = true;
+				return true;
             }
 
             if (powerGridMap.worldGet(pos.posX, pos.posY) > 0)
             {
-                map[pos.posX, pos.posY] = (ushort) (mapValue | (ushort) MapTileBits.PWRBIT);
-                return true;
+                //oldMap[pos.posX, pos.posY] = (ushort) (mapValue | (ushort) MapTileBits.PWRBIT);
+				//map[position].Id = mapValue;
+				map[position].IsPower = true;
+				return true;
             }
             else
             {
-                map[pos.posX, pos.posY] = (ushort)(mapValue & ~(ushort)MapTileBits.PWRBIT);
-                return false;
+                //oldMap[pos.posX, pos.posY] = (ushort)(mapValue & ~(ushort)MapTileBits.PWRBIT);
+				//map[position].Id = mapValue;
+				map[position].IsPower = true;
+				return false;
             }
         }
 

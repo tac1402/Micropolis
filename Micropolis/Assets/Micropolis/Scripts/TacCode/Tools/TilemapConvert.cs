@@ -39,6 +39,13 @@ public class TilemapConvert : MonoBehaviour
 
 	public void ExportAsPng(Texture2D tex, string name)
 	{
+
+		/*
+		//toPng.ExportAsPng(toPng.TextureFromSprite(asset.sprite), string.Format("tiles_{0}", i));
+
+		*/
+
+
 		byte[] bytes =  tex.EncodeToPNG();
 		var dirPath = Application.dataPath + "/Exported Tilemaps/";
 		if (!Directory.Exists(dirPath))
@@ -46,11 +53,20 @@ public class TilemapConvert : MonoBehaviour
 			Directory.CreateDirectory(dirPath);
 		}
 		File.WriteAllBytes(dirPath + name + ".png", bytes);
-		AssetDatabase.Refresh();
+		//AssetDatabase.Refresh();
 	}
 
 	public void ExportAsMaterial(Material m, string name)
 	{
+
+		/*
+		Material m = new Material(Shader.Find("Standard"));
+		string p = "Assets/Resources/Exported Tilemaps/" + string.Format("tiles_{0}", i) + ".png";
+		Texture2D t = (Texture2D)AssetDatabase.LoadAssetAtPath(p, typeof(Texture2D));
+		m.mainTexture =  t;
+		toPng.ExportAsMaterial(m, string.Format("m_{0}", i));
+		*/
+
 		var dirPath = "Assets/Resources/Exported Materials/";
 		if (!Directory.Exists(dirPath))
 		{

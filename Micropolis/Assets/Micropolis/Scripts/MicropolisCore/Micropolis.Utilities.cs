@@ -236,11 +236,11 @@ namespace MicropolisCore
         /// the user interface.
         /// </summary>
         /// <param name="value">The value to set doAnimation to</param>
-        public void setDoAnimation(bool value)
+        /*public void setDoAnimation(bool value)
         {
             doAnimation = value;
             mustUpdateOptions = true;
-        }
+        }*/
 
         /// <summary>
         /// Set the doMessages flag to the given value,

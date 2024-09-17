@@ -1,5 +1,8 @@
-﻿using System;
+﻿using UnityEngine;
+using System;
 using System.IO;
+using UnityEngine.UIElements;
+//using System.Numerics;
 
 namespace MicropolisCore
 {
@@ -120,11 +123,19 @@ namespace MicropolisCore
                 {
                     for (int y = 0; y < WORLD_H; y++)
                     {
-                        var temp = (short) map[x, y];
+                        short temp = 0;
                         result = result && load_short(ref temp, reader);
-                        map[x, y] = (ushort) temp;
-                    }
-                }
+                        //oldMap[x, y] = (ushort) temp;
+
+                        Vector3 position = new Vector3(x, 0, y);
+                        map[position].Id = temp & (ushort)MapTileBits.LOMASK;
+                        if ((temp & (ushort)MapTileBits.IsPower) == 1) { map[position].IsPower = true; }
+						if ((temp & (ushort)MapTileBits.IsCenter) == 1) { map[position].IsCenter = true; }
+						if ((temp & (ushort)MapTileBits.IsBulldozable) == 1) { map[position].IsBulldozable = true; }
+						if ((temp & (ushort)MapTileBits.CanConduct) == 1) { map[position].CanConduct = true; }
+						if ((temp & (ushort)MapTileBits.CanLit) == 1) { map[position].CanLit = true; }
+					}
+				}
             }
 
             return result;
@@ -246,9 +257,10 @@ namespace MicropolisCore
                 {
                     for (int y = 0; y < WORLD_H; y++)
                     {
-                        result = result && save_short((short) map[x, y], f);
-                    }
-                }
+						//result = result && save_short((short) oldMap[x, y], f);
+						result = result && save_short(map[new Vector3(x, 0, y)], f);
+					}
+				}
             }
 
             return result;
@@ -284,21 +296,32 @@ namespace MicropolisCore
             return true;
         }
 
-        private bool save_short(short buf, BinaryWriter f)
+        private bool save_short(TileInfo tile, BinaryWriter f)
         {
-            var value = swap_shorts(BitConverter.GetBytes(buf));
-            f.Write(value);
-            return true;
+            ushort buf = (ushort)(tile.Id & (ushort)MapTileBits.LOMASK);
+			if (tile.IsPower) { buf |= (ushort)MapTileBits.IsPower; }
+			if (tile.IsCenter) { buf |= (ushort)MapTileBits.IsCenter; }
+			if (tile.IsBulldozable) { buf |= (ushort)MapTileBits.IsBulldozable; }
+			if (tile.CanConduct) { buf |= (ushort)MapTileBits.CanConduct; }
+			if (tile.CanLit) { buf |= (ushort)MapTileBits.CanLit; }
+
+            return save_short((short)buf, f);
         }
 
-        /// <summary>
-        /// Load a scenario.
-        /// </summary>
-        /// <remarks>
-        /// s cannot be SC_NONE
-        /// </remarks>
-        /// <param name="s">Scenario to load.</param>
-        public void loadScenario(ScenarioType s)
+		private bool save_short(short buf, BinaryWriter f)
+		{
+			var value = swap_shorts(BitConverter.GetBytes(buf));
+			f.Write(value);
+			return true;
+		}
+		/// <summary>
+		/// Load a scenario.
+		/// </summary>
+		/// <remarks>
+		/// s cannot be SC_NONE
+		/// </remarks>
+		/// <param name="s">Scenario to load.</param>
+		public void loadScenario(ScenarioType s)
         {
             string name = null;
             string fname = null;

@@ -9,7 +9,7 @@ namespace MicropolisCore
         /// </summary>
         private void initMapArrays()
         {
-            map = new ushort[WORLD_W, WORLD_H];
+            //oldMap = new ushort[WORLD_W, WORLD_H];
 
             resHist = new short[HISTORY_LENGTH];
             comHist = new short[HISTORY_LENGTH];
@@ -25,7 +25,7 @@ namespace MicropolisCore
         /// </summary>
         private void destroyMapArrays()
         {
-            Array.Clear(map, 0, map.Length);
+            //Array.Clear(oldMap, 0, oldMap.Length);
 
             populationDensityMap.clear();
             trafficDensityMap.clear();

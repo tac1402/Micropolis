@@ -1,4 +1,5 @@
-﻿using System;
+﻿using UnityEngine;
+using System;
 
 namespace MicropolisCore
 {
@@ -67,11 +68,13 @@ namespace MicropolisCore
             {
                 for (int y = 0; y < WORLD_H; y++)
                 {
-                    ushort mapValue = map[x,y];
-                    if ((ushort)(mapValue & (ushort) MapTileBits.ZONEBIT) != 0)
+                    TileInfo mapValue = map[new Vector3(x, 0, y)];
+                    //if ((ushort)(mapValue & (ushort) MapTileBits.IsCenter) != 0)
+                    if (mapValue.IsCenter)
                     {
-                        ushort mapTile = (ushort)(mapValue & (ushort)MapTileBits.LOMASK);
-                        int pop = getPopulationDensity(new Position(x, y), mapTile) * 8;
+						//ushort mapTile = (ushort)(mapValue & (ushort)MapTileBits.LOMASK);
+						ushort mapTile = (ushort) mapValue.Id;
+						int pop = getPopulationDensity(new Position(x, y), mapTile) * 8;
                         pop = Math.Min(pop, 254);
 
                         tempMap1.worldSet(x, y, (Byte)pop);
@@ -184,8 +187,9 @@ namespace MicropolisCore
                     {
                         for (My = worldY; My <= worldY + 1; My++)
                         {
-                            loc = (map[Mx,My] & (ushort) MapTileBits.LOMASK);
-                            if (loc != 0)
+                            //loc = (oldMap[Mx,My] & (ushort) MapTileBits.LOMASK);
+							loc = map[new Vector3(Mx, 0, My)].Id;
+							if (loc != 0)
                             {
                                 if (loc < (ushort) MapTileCharacters.RUBBLE)
                                 {

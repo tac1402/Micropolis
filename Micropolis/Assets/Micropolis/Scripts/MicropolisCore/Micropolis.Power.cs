@@ -1,4 +1,6 @@
-﻿namespace MicropolisCore
+﻿using UnityEngine;
+
+namespace MicropolisCore
 {
     public partial class Micropolis
     {
@@ -16,7 +18,8 @@
 
             if (movedPos.move(testDir))
             {
-                if ((ushort)(map[movedPos.posX, movedPos.posY] & (ushort) MapTileBits.CONDBIT) == (ushort) MapTileBits.CONDBIT)
+                //if ((ushort)(oldMap[movedPos.posX, movedPos.posY] & (ushort) MapTileBits.CanConduct) == (ushort) MapTileBits.CanConduct)
+                if (map[new Vector3(movedPos.posX, 0, movedPos.posY)].CanConduct == true)
                 {
                     if (powerGridMap.worldGet(movedPos.posX, movedPos.posY) == 0)
                     {

@@ -11,8 +11,6 @@ public class City : MonoBehaviour
 	public Dictionary<int, GameObject> tiles = new Dictionary<int, GameObject>();
 	public MicropolisUnityEngine engine;
 
-	private Dictionary<Vector3, GameObject> map = new Dictionary<Vector3, GameObject>();
-
 	public bool IsDraw = false;
 
 	public void PreLoadTiles()
@@ -33,25 +31,21 @@ public class City : MonoBehaviour
 			{
 				for (int y = 0; y < Micropolis.WORLD_H; y++)
 				{
-					var tile = engine.map[x, y];
-					var tileId = tile & (ushort)MapTileBits.LOMASK;
+					TileInfo tile = engine.map[new Vector3(x, 0, y)];
 
-					// if the tile has no power and it's the center of the 
-					// zone then display the lighting bolt tile instead
-					if ((tile & (ushort)MapTileBits.ZONEBIT) == (ushort)MapTileBits.ZONEBIT &&
-						(tile & (ushort)MapTileBits.PWRBIT) == (ushort)MapTileBits.PWRBIT)
-					{
-						tileId = (ushort)MapTileCharacters.LIGHTNINGBOLT;
-					}
 
-					// map is defined from top to bottom but Tilemap works from bottom to top so invert 
-					// the y value here and offset by 1 so we start at 0, -1 instead of 0, 0 in the grid
-					var offset = y * -1 - 1;
-					//_mapLayer.SetTile(new Vector3Int(x, offset, 0), _tileEngine.GetTile(tileId));
+					//TileInfo tileInfo = new TileInfo();
+					tile.Tile = Instantiate(tiles[tile.Id], new Vector3(x, 0, y), Quaternion.Euler(0, 180, 0), gameObject.transform);
+					//tileInfo.Id = tile.Id;
+					
+					/*if ((tile & (ushort)MapTileBits.IsPower) == 1) { tileInfo.IsPower = true; }
+					if ((tile & (ushort)MapTileBits.CanConduct) == 1) { tileInfo.CanConduct = true; }
+					if ((tile & (ushort)MapTileBits.CanLit) == 1) { tileInfo.CanLit = true; }
+					if ((tile & (ushort)MapTileBits.IsBulldozable) == 1) { tileInfo.IsBulldozable = true; }
+					if ((tile & (ushort)MapTileBits.IsCenter) == 1) { tileInfo.IsCenter = true; }
+					*/
 
-					GameObject t = Instantiate(tiles[tileId], new Vector3(x, 0, y), Quaternion.Euler(0, 180, 0), gameObject.transform);
-
-					map.Add(new Vector3(x, 0, y), t);
+					//engine.map.Add(new Vector3(x, 0, y), tileInfo);
 				}
 			}
 			IsDraw = true;
@@ -62,24 +56,17 @@ public class City : MonoBehaviour
 			{
 				for (int y = 0; y < Micropolis.WORLD_H; y++)
 				{
-					var tile = engine.map[x, y];
-					var tileId = tile & (ushort)MapTileBits.LOMASK;
+					TileInfo tile = engine.map[new Vector3(x, 0, y)];
 
 					// if the tile has no power and it's the center of the 
 					// zone then display the lighting bolt tile instead
-					if ((tile & (ushort)MapTileBits.ZONEBIT) == (ushort)MapTileBits.ZONEBIT &&
-						(tile & (ushort)MapTileBits.PWRBIT) == (ushort)MapTileBits.PWRBIT)
+					if (tile.IsCenter == true && tile.IsPower == false)
 					{
-						tileId = (ushort)MapTileCharacters.LIGHTNINGBOLT;
+						tile.Id = (ushort)MapTileCharacters.LIGHTNINGBOLT;
 					}
 
-					// map is defined from top to bottom but Tilemap works from bottom to top so invert 
-					// the y value here and offset by 1 so we start at 0, -1 instead of 0, 0 in the grid
-					var offset = y * -1 - 1;
-					//_mapLayer.SetTile(new Vector3Int(x, offset, 0), _tileEngine.GetTile(tileId));
-
-					MeshRenderer mrTile = tiles[tileId].GetComponentInChildren<MeshRenderer>();
-					MeshRenderer mr = map[new Vector3(x, 0, y)].GetComponentInChildren<MeshRenderer>();
+					MeshRenderer mrTile = tiles[tile.Id].GetComponentInChildren<MeshRenderer>();
+					MeshRenderer mr = engine.map[new Vector3(x, 0, y)].Tile.GetComponentInChildren<MeshRenderer>();
 					mr.material = mrTile.sharedMaterial;
 				}
 			}

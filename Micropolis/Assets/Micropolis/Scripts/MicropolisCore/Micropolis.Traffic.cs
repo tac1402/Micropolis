@@ -1,4 +1,5 @@
-﻿using System;
+﻿using UnityEngine;
+using System;
 
 namespace MicropolisCore
 {
@@ -89,9 +90,10 @@ namespace MicropolisCore
                 if (pos.testBounds())
                 {
 
-                    ushort tile = (ushort)(map[pos.posX,pos.posY] & (ushort) MapTileBits.LOMASK);
+                    //ushort tile = (ushort)(oldMap[pos.posX,pos.posY] & (ushort) MapTileBits.LOMASK);
+					int tile = map[new Vector3(pos.posX, 0, pos.posY)].Id;
 
-                    if (tile >= (ushort) MapTileCharacters.ROADBASE && tile < (ushort) MapTileCharacters.POWERBASE)
+					if (tile >= (ushort) MapTileCharacters.ROADBASE && tile < (ushort) MapTileCharacters.POWERBASE)
                     {
                         SimSprite sprite;
 
@@ -145,7 +147,7 @@ namespace MicropolisCore
                 if (Position.testBounds(tx, ty))
                 {
 
-                    if (roadTest(map[tx,ty]))
+                    if (roadTest(map[new Vector3(tx, 0, ty)]))
                     {
 
                         pos.posX = tx;
@@ -164,16 +166,16 @@ namespace MicropolisCore
         /// </summary>
         /// <param name="mv">Value from the map.</param>
         /// <returns>Indication that you can drive on the given tile</returns>
-        bool roadTest(ushort mv)
+        bool roadTest(TileInfo tile)
         {
-            ushort tile = (ushort) (mv & (ushort) MapTileBits.LOMASK);
+            //ushort tile = (ushort) (mv & (ushort) MapTileBits.LOMASK);
 
-            if (tile < (ushort) MapTileCharacters.ROADBASE || tile > (ushort) MapTileCharacters.LASTRAIL)
+            if (tile.Id < (ushort) MapTileCharacters.ROADBASE || tile.Id > (ushort) MapTileCharacters.LASTRAIL)
             {
                 return false;
             }
 
-            if (tile >= (ushort) MapTileCharacters.POWERBASE && tile < (ushort) MapTileCharacters.LASTPOWER)
+            if (tile.Id >= (ushort) MapTileCharacters.POWERBASE && tile.Id < (ushort) MapTileCharacters.LASTPOWER)
             {
                 return false;
             }
@@ -257,8 +259,9 @@ namespace MicropolisCore
 
             if (pos.posY > 0)
             {
-                ushort z = (ushort)(map[pos.posX,pos.posY - 1] & (ushort)MapTileBits.LOMASK);
-                if (z >= l && z <= h)
+                //ushort z = (ushort)(oldMap[pos.posX,pos.posY - 1] & (ushort)MapTileBits.LOMASK);
+				ushort z = (ushort)(map[new Vector3(pos.posX, 0, pos.posY - 1)].Id);
+				if (z >= l && z <= h)
                 {
                     return true;
                 }
@@ -266,8 +269,9 @@ namespace MicropolisCore
 
             if (pos.posX < (WORLD_W - 1))
             {
-                ushort z = (ushort)(map[pos.posX + 1,pos.posY] & (ushort) MapTileBits.LOMASK);
-                if (z >= l && z <= h)
+                //ushort z = (ushort)(oldMap[pos.posX + 1,pos.posY] & (ushort) MapTileBits.LOMASK);
+				ushort z = (ushort)(map[new Vector3(pos.posX + 1, 0, pos.posY)].Id);
+				if (z >= l && z <= h)
                 {
                     return true;
                 }
@@ -275,8 +279,9 @@ namespace MicropolisCore
 
             if (pos.posY < (WORLD_H - 1))
             {
-                ushort z = (ushort)(map[pos.posX,pos.posY + 1] & (ushort)MapTileBits.LOMASK);
-                if (z >= l && z <= h)
+                //ushort z = (ushort)(oldMap[pos.posX,pos.posY + 1] & (ushort)MapTileBits.LOMASK);
+				ushort z = (ushort)(map[new Vector3(pos.posX, 0, pos.posY + 1)].Id);
+				if (z >= l && z <= h)
                 {
                     return true;
                 }
@@ -284,8 +289,9 @@ namespace MicropolisCore
 
             if (pos.posX > 0)
             {
-                ushort z = (ushort)(map[pos.posX - 1,pos.posY] & (ushort) MapTileBits.LOMASK);
-                if (z >= l && z <= h)
+                //ushort z = (ushort)(oldMap[pos.posX - 1,pos.posY] & (ushort) MapTileBits.LOMASK);
+				ushort z = (ushort)(map[new Vector3(pos.posX - 1, 0, pos.posY)].Id);
+				if (z >= l && z <= h)
                 {
                     return true;
                 }
@@ -310,7 +316,7 @@ namespace MicropolisCore
             int i;
             for (i = 0; i < 4; i++)
             {
-                if (dir != dirLast && roadTest(getTileFromMap(pos, dir, (ushort) MapTileCharacters.DIRT)))
+                if (dir != dirLast && roadTest(getTileFromMap(pos, dir, (ushort)MapTileCharacters.DIRT)))
                 {
                     // found a road in an allowed direction
                     directions[i] = dir;
@@ -388,41 +394,48 @@ namespace MicropolisCore
         /// The tile in the indicated direction. If tile is off-world or an
         /// incorrect direction is given, DIRT is returned
         /// </returns>
-        private ushort getTileFromMap(Position pos, Direction2 dir, ushort defaultTile)
+        private TileInfo getTileFromMap(Position pos, Direction2 dir, ushort defaultTileId)
         {
-            switch (dir)
+            TileInfo defaultTile = new TileInfo();
+            defaultTile.Id = defaultTileId;
+
+			switch (dir)
             {
                 case Direction2.DIR2_NORTH:
                     if (pos.posY > 0)
                     {
-                        return (ushort)(map[pos.posX,pos.posY - 1] & (ushort) MapTileBits.LOMASK);
-                    }
+                        //return (ushort)(oldMap[pos.posX,pos.posY - 1] & (ushort) MapTileBits.LOMASK);
+						return map[new Vector3(pos.posX, 0, pos.posY - 1)];
+					}
 
-                    return defaultTile;
+					return defaultTile;
 
                 case Direction2.DIR2_EAST:
                     if (pos.posX < WORLD_W - 1)
                     {
-                        return (ushort)(map[pos.posX + 1,pos.posY] & (ushort)MapTileBits.LOMASK);
-                    }
+                        //return (ushort)(oldMap[pos.posX + 1,pos.posY] & (ushort)MapTileBits.LOMASK);
+						return map[new Vector3(pos.posX + 1, 0, pos.posY)];
+					}
 
-                    return defaultTile;
+					return defaultTile;
 
                 case Direction2.DIR2_SOUTH:
                     if (pos.posY < WORLD_H - 1)
                     {
-                        return (ushort)(map[pos.posX,pos.posY + 1] & (ushort)MapTileBits.LOMASK);
-                    }
+                        //return (ushort)(oldMap[pos.posX,pos.posY + 1] & (ushort)MapTileBits.LOMASK);
+						return map[new Vector3(pos.posX, 0, pos.posY + 1)];
+					}
 
-                    return defaultTile;
+					return defaultTile;
 
                 case Direction2.DIR2_WEST:
                     if (pos.posX > 0)
                     {
-                        return (ushort)(map[pos.posX - 1,pos.posY] & (ushort)MapTileBits.LOMASK);
-                    }
+                        //return (ushort)(oldMap[pos.posX - 1,pos.posY] & (ushort)MapTileBits.LOMASK);
+						return map[new Vector3(pos.posX - 1, 0, pos.posY)];
+					}
 
-                    return defaultTile;
+					return defaultTile;
 
                 default:
                     return defaultTile;

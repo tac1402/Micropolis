@@ -237,10 +237,10 @@ namespace MicropolisEngine
         public void tickEngine()
         {
             simTick();
-            if (doAnimation && !tilesAnimated)
+            /*if (doAnimation && !tilesAnimated)
             {
                 animateTiles();
-            }
+            }*/
             simUpdate();
 
             // sendUpdate('tick')

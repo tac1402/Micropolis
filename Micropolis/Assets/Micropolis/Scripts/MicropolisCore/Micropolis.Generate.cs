@@ -1,4 +1,7 @@
-﻿namespace MicropolisCore
+﻿using UnityEngine;
+using static UnityEditor.PlayerSettings;
+
+namespace MicropolisCore
 {
     public partial class Micropolis
     {
@@ -98,31 +101,15 @@
         /// </summary>
         private void clearMap()
         {
-            for (var x = 0; x < WORLD_W; x++)
+			map.Clear();
+			for (var x = 0; x < WORLD_W; x++)
             {
                 for (var y = 0; y < WORLD_H; y++)
                 {
-                    map[x, y] = (ushort) MapTileCharacters.DIRT;
-                }
-            }
-        }
-
-        /// <summary>
-        /// Clear everything from all land
-        /// TODO function is never called
-        /// </summary>
-        private void clearUnnatural()
-        {
-            for (var x = 0; x < WORLD_W; x++)
-            {
-                for (var y = 0; y < WORLD_H; y++)
-                {
-                    if (map[x, y] > (ushort) MapTileCharacters.WOODS)
-                    {
-                        map[x, y] = (ushort)MapTileCharacters.DIRT;
-                    }
-                }
-            }
+                    //oldMap[x, y] = (ushort) MapTileCharacters.DIRT;
+                    map.Add(new Vector3(x, 0, y), new TileInfo((int)MapTileCharacters.DIRT));
+				}
+			}
         }
 
         /// <summary>
@@ -140,13 +127,15 @@
                     if ((x < 5) || (x >= WORLD_W - 5) ||
                         (y < 5) || (y >= WORLD_H - 5))
                     {
-                        map[x,y] = (ushort) MapTileCharacters.RIVER;
-                    }
-                    else
+                        //oldMap[x,y] = (ushort) MapTileCharacters.RIVER;
+						map[new Vector3(x, 0, y)].Id = (ushort)MapTileCharacters.RIVER;
+					}
+					else
                     {
-                        map[x,y] = (ushort) MapTileCharacters.DIRT;
-                    }
-                }
+                        //oldMap[x,y] = (ushort) MapTileCharacters.DIRT;
+						map[new Vector3(x, 0, y)].Id = (ushort)MapTileCharacters.DIRT;
+					}
+				}
             }
 
             for (x = 0; x < WORLD_W - 5; x += 2)
@@ -269,12 +258,20 @@
                     return;
                 }
 
-                if ((map[treePos.posX,treePos.posY] & (ushort)MapTileBits.LOMASK) == (ushort)MapTileCharacters.DIRT)
-                {
-                    map[treePos.posX,treePos.posY] = (ushort)MapTileCharacters.WOODS | (ushort)MapTileBits.BLBNBIT;
-                }
+                Vector3 position = new Vector3(treePos.posX, 0, treePos.posY);
 
-                numTrees--;
+
+				//if ((oldMap[treePos.posX,treePos.posY] & (ushort)MapTileBits.LOMASK) == (ushort)MapTileCharacters.DIRT)
+				if (map[position].Id == (ushort)MapTileCharacters.DIRT)
+				{
+					//oldMap[treePos.posX,treePos.posY] = (ushort)MapTileCharacters.WOODS | (ushort)MapTileBits.BLBNBIT;
+
+                    map[position].Id = (ushort)MapTileCharacters.WOODS;
+					map[position].IsBulldozable = true;
+					map[position].CanLit = true;
+				}
+
+				numTrees--;
             }
         }
 
@@ -301,8 +298,8 @@
                 treeSplash(xloc, yloc);
             }
 
-            smoothTrees();
-            smoothTrees();
+            //smoothTrees();
+            //smoothTrees();
         }
 
         private void smoothRiver()
@@ -310,19 +307,25 @@
             short[] dx = { -1, 0, 1, 0 };
             short[] dy = { 0, 1, 0, -1 };
             short[] REdTab = {
-                13 | (short)MapTileBits.BULLBIT,   13 | (short)MapTileBits.BULLBIT,     17 | (short)MapTileBits.BULLBIT,     15 | (short)MapTileBits.BULLBIT,
-                5 | (short)MapTileBits.BULLBIT,    2,                19 | (short)MapTileBits.BULLBIT,     17 | (short)MapTileBits.BULLBIT,
-                9 | (short)MapTileBits.BULLBIT,    11 | (short)MapTileBits.BULLBIT,     2,                13 | (short)MapTileBits.BULLBIT,
-                7 | (short)MapTileBits.BULLBIT,    9 | (short)MapTileBits.BULLBIT,      5 | (short)MapTileBits.BULLBIT,      2 };
+                13, 13, 17, 15,
+                5,  2,  19, 17,
+                9,  11, 2,  13,
+                7,  9,  5,  2 };
 
-            short bitIndex, z, xTemp, yTemp;
-            short temp, x, y;
+			short[] BTab = {
+				1, 1, 1, 1,
+				1, 0, 1, 1,
+				1, 1, 0, 1,
+				1, 1, 1, 0};
+
+			short bitIndex, z, xTemp, yTemp;
+            short temp, temp2, x, y;
 
             for (x = 0; x < WORLD_W; x++)
             {
                 for (y = 0; y < WORLD_H; y++)
                 {
-                    if (map[x,y] == (short)MapTileCharacters.REDGE)
+                    if (map[new Vector3(x,0, y)].Id == (short)MapTileCharacters.REDGE)
                     {
                         bitIndex = 0;
 
@@ -331,29 +334,45 @@
                             bitIndex = (short) (bitIndex << 1);
                             xTemp = (short) (x + dx[z]);
                             yTemp = (short) (y + dy[z]);
-                            if (Position.testBounds(xTemp, yTemp) &&
-                                ((map[xTemp,yTemp] & (short)MapTileBits.LOMASK) != (short)MapTileCharacters.DIRT) &&
-                                (((map[xTemp,yTemp] & (short)MapTileBits.LOMASK) < (short)MapTileCharacters.WOODS_LOW) ||
-                                 ((map[xTemp,yTemp] & (short)MapTileBits.LOMASK) > (short)MapTileCharacters.WOODS_HIGH)))
+
+                            Vector3 position = new Vector3(xTemp, 0, yTemp);
+
+                            bool okBounds = Position.testBounds(xTemp, yTemp);
+
+                            /*if (Position.testBounds(xTemp, yTemp) &&
+                                ((oldMap[xTemp,yTemp] & (short)MapTileBits.LOMASK) != (short)MapTileCharacters.DIRT) &&
+                                (((oldMap[xTemp,yTemp] & (short)MapTileBits.LOMASK) < (short)MapTileCharacters.WOODS_LOW) ||
+                                 ((oldMap[xTemp,yTemp] & (short)MapTileBits.LOMASK) > (short)MapTileCharacters.WOODS_HIGH)))*/
+                            if (okBounds == true)
                             {
-                                bitIndex++;
+                                if ((map[position].Id != (short)MapTileCharacters.DIRT) &&
+                                    (map[position].Id < (short)MapTileCharacters.WOODS_LOW) || (map[position].Id > (short)MapTileCharacters.WOODS_HIGH))
+                                {
+                                    bitIndex++;
+                                }
                             }
                         }
 
                         temp = REdTab[bitIndex & 15];
+						temp2 = BTab[bitIndex & 15];
 
-                        if ((temp != (short)MapTileCharacters.RIVER) &&
+						if ((temp != (short)MapTileCharacters.RIVER) &&
                             getRandom(1) != 0)
                         {
                             temp++;
                         }
 
-                        map[x,y] = (ushort) temp;
+                        Vector3 position2 = new Vector3(x, 0, y);
+
+                        //oldMap[x,y] = (ushort) temp;
+                        map[position2].Id = temp;
+                        if (temp2 == 1) { map[position2].IsBulldozable = true; }
                     }
                 }
             }
         }
 
+        /*
         private bool isTree(ushort cell)
         {
             if ((cell & (ushort)MapTileBits.LOMASK) >= (ushort)MapTileCharacters.WOODS_LOW && (cell & (ushort)MapTileBits.LOMASK) <= (ushort)MapTileCharacters.WOODS_HIGH)
@@ -361,22 +380,22 @@
                 return true;
             }
             return false;
-        }
+        }*/
 
-        private void smoothTrees()
+        /*private void smoothTrees()
         {
             short x, y;
             for (x = 0; x < WORLD_W; x++)
             {
                 for (y = 0; y < WORLD_H; y++)
                 {
-                    if (isTree((ushort) map[x,y]))
+                    if (isTree((ushort) oldMap[x,y]))
                     {
                         smoothTreesAt(x, y, false);
                     }
                 }
             }
-        }
+        }*/
 
         /// <summary>
         /// Temporary function to prevent breaking a lot of code.
@@ -384,13 +403,13 @@
         /// <param name="x"></param>
         /// <param name="y"></param>
         /// <param name="preserve"></param>
-        private void smoothTreesAt(int x, int y, bool preserve)
+        /*private void smoothTreesAt(int x, int y, bool preserve)
         {
             var effects = new ToolEffects(this);
 
             smoothTreesAt(x, y, preserve, effects);
             effects.modifyWorld();
-        }
+        }*/
 
         /// <summary>
         /// Smooth trees at a position
@@ -399,7 +418,7 @@
         /// <param name="y"></param>
         /// <param name="preserve"></param>
         /// <param name="effects"></param>
-        private void smoothTreesAt(int x, int y, bool preserve, ToolEffects effects)
+        /*private void smoothTreesAt(int x, int y, bool preserve, ToolEffects effects)
         {
             short[] dx = { -1, 0, 1, 0 };
             short[] dy = { 0, 1, 0, -1 };
@@ -448,7 +467,7 @@
                     effects.setMapValue(x, y, (ushort) temp);
                 }
             }
-        }
+        }*/
 
         /// <summary>
         /// Construct rivers.
@@ -493,7 +512,8 @@
 
             Position pos = new Position(riverPos);
 
-            while (Position.testBounds((short) (pos.posX + 4), (short) (pos.posY + 4)))
+            //while (Position.testBounds((short) (pos.posX + 4), (short) (pos.posY + 4)))
+            while (Position.testBorder((short) (pos.posX), (short) (pos.posY)))
             {
                 plopBRiver(pos);
                 if (getRandom((short) rate1) < 10)
@@ -512,9 +532,9 @@
                     }
                 }
                 pos.move(terrainDir);
-            }
+			}
 
-            return terrainDir;
+			return terrainDir;
         }
 
         /// <summary>
@@ -541,7 +561,8 @@
 
             Position pos = new Position(riverPos);
 
-            while (Position.testBounds((short) (pos.posX + 3), (short) (pos.posY + 3)))
+            //while (Position.testBounds((short) (pos.posX + 3), (short) (pos.posY + 3)))
+            while (Position.testBorder((short) (pos.posX), (short) (pos.posY)))
             {
                 //printf("doSRiver %d %d td %d rd %d\n", pos.posX, pos.posY, terrainDir, riverDir);
                 plopSRiver(pos);
@@ -657,25 +678,29 @@
                 return;
             }
 
-            ushort temp = map[xLoc,yLoc];
+            Vector3 position = new Vector3(xLoc, 0, yLoc);
 
-            if (temp != (ushort) MapTileCharacters.DIRT)
+            //ushort temp = oldMap[xLoc,yLoc];
+
+            if (map[position].Id != (ushort) MapTileCharacters.DIRT)
             {
-                temp = (ushort)(temp & (ushort)MapTileBits.LOMASK);
-                if (temp == (ushort)MapTileCharacters.RIVER)
+                //temp = (ushort)(temp & (ushort)MapTileBits.LOMASK);
+                if (map[position].Id == (ushort)MapTileCharacters.RIVER)
                 {
                     if (mChar != (ushort)MapTileCharacters.CHANNEL)
                     {
                         return;
                     }
                 }
-                if (temp == (ushort)MapTileCharacters.CHANNEL)
+                if (map[position].Id == (ushort)MapTileCharacters.CHANNEL)
                 {
                     return;
                 }
             }
-            map[xLoc,yLoc] = mChar;
-        }
+            //oldMap[xLoc,yLoc] = mChar;
+            map[position].Id = mChar;
+
+		}
 
         /// <summary>
         /// Put down a small river diamond-like shape.
@@ -751,7 +776,7 @@
         public void smoothWater()
         {
             int x, y;
-            ushort tile;
+            int tile;
             Direction2 dir;
 
             for (x = 0; x < WORLD_W; x++)
@@ -759,10 +784,11 @@
                 for (y = 0; y < WORLD_H; y++)
                 {
 
-                    tile = (ushort)(map[x,y] & (ushort)MapTileBits.LOMASK);
+                    //tile = (ushort)(oldMap[x,y] & (ushort)MapTileBits.LOMASK);
+					tile = map[new Vector3(x, 0, y)].Id;
 
-                    /* If (x, y) is water: */
-                    if (tile >= (ushort)MapTileCharacters.WATER_LOW && tile <= (ushort)MapTileCharacters.WATER_HIGH)
+					/* If (x, y) is water: */
+					if (tile >= (ushort)MapTileCharacters.WATER_LOW && tile <= (ushort)MapTileCharacters.WATER_HIGH)
                     {
 
                         var pos = new Position(x, y);
@@ -771,12 +797,13 @@
                             /* If getting a tile off-map, condition below fails. */
                             // @note I think this may have been a bug, since it always uses DIR2_WEST instead of dir.
                             //tile = getTileFromMap(pos, DIR2_WEST, WATER_LOW);
-                            tile = getTileFromMap(pos, dir, (ushort) MapTileCharacters.WATER_LOW);
+                            tile = getTileFromMap(pos, dir, (ushort) MapTileCharacters.WATER_LOW).Id;
 
                             /* If nearest object is not water: */
                             if (tile < (ushort)MapTileCharacters.WATER_LOW || tile > (ushort)MapTileCharacters.WATER_HIGH)
                             {
-                                map[x,y] = (ushort) MapTileCharacters.REDGE; /* set river edge */
+                                //oldMap[x,y] = (ushort) MapTileCharacters.REDGE; /* set river edge */
+								map[new Vector3(x, 0, y)].Id = (ushort)MapTileCharacters.REDGE; /* set river edge */
                                 break; // Continue with next tile
                             }
                         }
@@ -789,10 +816,11 @@
                 for (y = 0; y < WORLD_H; y++)
                 {
 
-                    tile = (ushort)(map[x,y] & (ushort)MapTileBits.LOMASK);
+                    //tile = (ushort)(oldMap[x,y] & (ushort)MapTileBits.LOMASK);
+					tile = map[new Vector3(x, 0, y)].Id;
 
-                    /* If water which is not a channel: */
-                    if (tile != (ushort)MapTileCharacters.CHANNEL && tile >= (ushort)MapTileCharacters.WATER_LOW && tile <= (ushort)MapTileCharacters.WATER_HIGH)
+					/* If water which is not a channel: */
+					if (tile != (ushort)MapTileCharacters.CHANNEL && tile >= (ushort)MapTileCharacters.WATER_LOW && tile <= (ushort)MapTileCharacters.WATER_HIGH)
                     {
 
                         bool makeRiver = true; // make (x, y) a river
@@ -804,7 +832,7 @@
                             /* If getting a tile off-map, condition below fails. */
                             // @note I think this may have been a bug, since it always uses DIR2_WEST instead of dir.
                             //tile = getTileFromMap(pos, DIR2_WEST, WATER_LOW);
-                            tile = getTileFromMap(pos, dir, (ushort)MapTileCharacters.WATER_LOW);
+                            tile = getTileFromMap(pos, dir, (ushort)MapTileCharacters.WATER_LOW).Id;
 
                             /* If nearest object is not water: */
                             if (tile < (ushort)MapTileCharacters.WATER_LOW || tile > (ushort)MapTileCharacters.WATER_HIGH)
@@ -816,9 +844,10 @@
 
                         if (makeRiver)
                         {
-                            map[x,y] = (ushort) MapTileCharacters.RIVER; /* make it a river */
-                        }
-                    }
+                            //oldMap[x,y] = (ushort) MapTileCharacters.RIVER; /* make it a river */
+							map[new Vector3(x, 0, y)].Id = (ushort)MapTileCharacters.RIVER; /* make it a river */
+						}
+					}
                 }
             }
 
@@ -827,10 +856,11 @@
                 for (y = 0; y < WORLD_H; y++)
                 {
 
-                    tile = (ushort)(map[x,y] & (ushort)MapTileBits.LOMASK);
+                    //tile = (ushort)(oldMap[x,y] & (ushort)MapTileBits.LOMASK);
+					tile = map[new Vector3(x, 0, y)].Id;
 
-                    /* If woods: */
-                    if (tile >= (ushort)MapTileCharacters.WOODS_LOW && tile <= (ushort)MapTileCharacters.WOODS_HIGH)
+					/* If woods: */
+					if (tile >= (ushort)MapTileCharacters.WOODS_LOW && tile <= (ushort)MapTileCharacters.WOODS_HIGH)
                     {
 
                         Position pos = new Position(x, y);
@@ -840,12 +870,13 @@
                             /* If getting a tile off-map, condition below fails. */
                             // @note I think this may have been a bug, since it always uses DIR2_WEST instead of dir.
                             //tile = getTileFromMap(pos, DIR2_WEST, WATER_LOW);
-                            tile = getTileFromMap(pos, dir, unchecked((ushort)MapTileCharacters.TILE_INVALID));
+                            tile = getTileFromMap(pos, dir, unchecked((ushort)MapTileCharacters.TILE_INVALID)).Id;
 
                             if (tile == (ushort)MapTileCharacters.RIVER || tile == (ushort)MapTileCharacters.CHANNEL)
                             {
-                                map[x,y] = (ushort) MapTileCharacters.REDGE; /* make it water's edge */
-                                break;
+                                //oldMap[x,y] = (ushort) MapTileCharacters.REDGE; /* make it water's edge */
+								map[new Vector3(x, 0, y)].Id = (ushort)MapTileCharacters.REDGE; /* make it water's edge */
+								break;
                             }
                         }
                     }

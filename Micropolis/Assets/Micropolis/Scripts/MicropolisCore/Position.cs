@@ -186,5 +186,17 @@ namespace MicropolisCore
             return x >= 0 && x < Micropolis.WORLD_W
                    && y >= 0 && y < Micropolis.WORLD_H;
         }
-    }
+
+		public bool testBorder()
+		{
+			return testBorder((short)posX, (short)posY);
+		}
+
+		public static bool testBorder(short x, short y)
+		{
+			return x > 0 && x <= Micropolis.WORLD_W
+				   && y > 0 && y <= Micropolis.WORLD_H;
+		}
+
+	}
 }
