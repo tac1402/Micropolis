@@ -565,4 +565,18 @@ namespace MicropolisCore
             }
         }
     }
+
+
+	public enum MapTileBits
+	{
+		IsPower = 0x8000, // bit 15, tile has power.
+		CanConduct = 0x4000, // bit 14. tile can conduct electricity.
+		CanLit = 0x2000, // bit 13, tile can be lit.
+		IsBulldozable = 0x1000, // bit 12, tile is bulldozable.
+		IsCenter = 0x0400, // bit 10, tile is the center tile of the zone.
+
+		// Mask for the bits-part of the tile
+		LOMASK = 0x03ff, // Mask for the #MapTileCharacters part of the tile
+
+	}
 }

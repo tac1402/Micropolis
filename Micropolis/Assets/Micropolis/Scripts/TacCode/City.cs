@@ -32,20 +32,7 @@ public class City : MonoBehaviour
 				for (int y = 0; y < Micropolis.WORLD_H; y++)
 				{
 					TileInfo tile = engine.map[new Vector3(x, 0, y)];
-
-
-					//TileInfo tileInfo = new TileInfo();
 					tile.Tile = Instantiate(tiles[tile.Id], new Vector3(x, 0, y), Quaternion.Euler(0, 180, 0), gameObject.transform);
-					//tileInfo.Id = tile.Id;
-					
-					/*if ((tile & (ushort)MapTileBits.IsPower) == 1) { tileInfo.IsPower = true; }
-					if ((tile & (ushort)MapTileBits.CanConduct) == 1) { tileInfo.CanConduct = true; }
-					if ((tile & (ushort)MapTileBits.CanLit) == 1) { tileInfo.CanLit = true; }
-					if ((tile & (ushort)MapTileBits.IsBulldozable) == 1) { tileInfo.IsBulldozable = true; }
-					if ((tile & (ushort)MapTileBits.IsCenter) == 1) { tileInfo.IsCenter = true; }
-					*/
-
-					//engine.map.Add(new Vector3(x, 0, y), tileInfo);
 				}
 			}
 			IsDraw = true;
@@ -58,16 +45,20 @@ public class City : MonoBehaviour
 				{
 					TileInfo tile = engine.map[new Vector3(x, 0, y)];
 
-					// if the tile has no power and it's the center of the 
-					// zone then display the lighting bolt tile instead
-					if (tile.IsCenter == true && tile.IsPower == false)
+					if (tile.IsChanged == true)
 					{
-						tile.Id = (ushort)MapTileCharacters.LIGHTNINGBOLT;
-					}
+						// if the tile has no power and it's the center of the 
+						// zone then display the lighting bolt tile instead
+						if (tile.IsCenter == true && tile.IsPower == false)
+						{
+							tile.Id = (ushort)MapTileCharacters.LIGHTNINGBOLT;
+						}
 
-					MeshRenderer mrTile = tiles[tile.Id].GetComponentInChildren<MeshRenderer>();
-					MeshRenderer mr = engine.map[new Vector3(x, 0, y)].Tile.GetComponentInChildren<MeshRenderer>();
-					mr.material = mrTile.sharedMaterial;
+						MeshRenderer mrTile = tiles[tile.Id].GetComponentInChildren<MeshRenderer>();
+						MeshRenderer mr = engine.map[new Vector3(x, 0, y)].Tile.GetComponentInChildren<MeshRenderer>();
+						mr.material = mrTile.sharedMaterial;
+						tile.IsChanged = false;
+					}
 				}
 			}
 
