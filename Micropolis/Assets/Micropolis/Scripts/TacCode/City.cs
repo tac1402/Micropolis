@@ -32,7 +32,8 @@ public class City : MonoBehaviour
 				for (int y = 0; y < Micropolis.WORLD_H; y++)
 				{
 					TileInfo tile = engine.map[new Vector3(x, 0, y)];
-					tile.Tile = Instantiate(tiles[tile.Id], new Vector3(x, 0, y), Quaternion.Euler(0, 180, 0), gameObject.transform);
+					tile.Tile = Instantiate(tiles[tile.Id], new Vector3(x, 0, y), Quaternion.Euler(0, -180, 0));
+					tile.Tile.transform.SetParent(gameObject.transform, false);
 				}
 			}
 			IsDraw = true;

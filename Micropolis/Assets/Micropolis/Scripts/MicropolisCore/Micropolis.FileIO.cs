@@ -128,12 +128,14 @@ namespace MicropolisCore
                         //oldMap[x, y] = (ushort) temp;
 
                         Vector3 position = new Vector3(x, 0, y);
+
                         map[position].Id = temp & (ushort)MapTileBits.LOMASK;
-                        if ((temp & (ushort)MapTileBits.IsPower) == 1) { map[position].IsPower = true; }
-						if ((temp & (ushort)MapTileBits.IsCenter) == 1) { map[position].IsCenter = true; }
-						if ((temp & (ushort)MapTileBits.IsBulldozable) == 1) { map[position].IsBulldozable = true; }
-						if ((temp & (ushort)MapTileBits.CanConduct) == 1) { map[position].CanConduct = true; }
-						if ((temp & (ushort)MapTileBits.CanLit) == 1) { map[position].CanLit = true; }
+
+                        if ((temp & (ushort)MapTileBits.IsPower) == (ushort)MapTileBits.IsPower) { map[position].IsPower = true; }
+						if ((temp & (ushort)MapTileBits.IsCenter) == (ushort)MapTileBits.IsCenter) { map[position].IsCenter = true; }
+						if ((temp & (ushort)MapTileBits.IsBulldozable) == (ushort)MapTileBits.IsBulldozable) { map[position].IsBulldozable = true; }
+						if ((temp & (ushort)MapTileBits.CanConduct) == (ushort)MapTileBits.CanConduct) { map[position].CanConduct = true; }
+						if ((temp & (ushort)MapTileBits.CanLit) == (ushort)MapTileBits.CanLit) { map[position].CanLit = true; }
 					}
 				}
             }

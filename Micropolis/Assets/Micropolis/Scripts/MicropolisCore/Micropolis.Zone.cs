@@ -215,7 +215,7 @@ namespace MicropolisCore
 						{
 							//oldMap[xx, yy] = (ushort)((ushort)MapTileBits.ASCBIT | ((ushort)MapTileCharacters.SMOKEBASE + (ushort)aniTabA[z]));
 							//oldMap[xx, yy] = (ushort)((ushort)MapTileBits.ASCBIT | ((ushort)MapTileCharacters.SMOKEBASE + (ushort)aniTabB[z]));
-                            map[position].Id = (ushort)MapTileCharacters.SMOKEBASE + (ushort)aniTabB[z];
+                            map[position].Id = (ushort)MapTileCharacters.SMOKEBASE + (ushort)aniTabA[z];
 							map[position].CanConduct = true;
 							map[position].CanLit = true;
 						}
@@ -228,7 +228,7 @@ namespace MicropolisCore
                             //oldMap[xx, yy] = (ushort)((ushort)MapTileBits.REGBIT | ((ushort)MapTileCharacters.SMOKEBASE + (ushort)aniTabC[z]));
                             //oldMap[xx, yy] = (ushort)((ushort)MapTileBits.REGBIT | ((ushort)MapTileCharacters.SMOKEBASE + (ushort)aniTabD[z]));
 
-							map[position].Id = (ushort)MapTileCharacters.SMOKEBASE + (ushort)aniTabD[z];
+							map[position].Id = (ushort)MapTileCharacters.SMOKEBASE + (ushort)aniTabB[z];
 							map[position].CanConduct = true;
 							map[position].CanLit = true;
 						}
@@ -969,15 +969,17 @@ namespace MicropolisCore
                 int xx = x + DX[z];
                 int yy = y + DY[z];
 
-                TileInfo tile = map[new Vector3 (xx, 0, yy)];
-
-                if (Position.testBounds((short) xx, (short) yy) &&
-					tile.Id != (ushort) MapTileCharacters.DIRT &&
-					tile.Id <= (ushort) MapTileCharacters.LASTROAD)
+                if (Position.testBounds((short)xx, (short)yy))
                 {
-                    score++; // look for road
-                }
-            }
+					TileInfo tile = map[new Vector3(xx, 0, yy)];
+
+					if (tile.Id != (ushort)MapTileCharacters.DIRT &&
+						tile.Id <= (ushort)MapTileCharacters.LASTROAD)
+					{
+						score++; // look for road
+					}
+				}
+			}
 
             return score;
         }
