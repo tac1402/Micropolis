@@ -143,12 +143,12 @@ namespace MicropolisCore
         /// <summary>
         /// Number of tiles that a coal power plant can supply power to.
         /// </summary>
-        private const long COAL_POWER_STRENGTH = 700;
+        public const long COAL_POWER_STRENGTH = 700;
 
         /// <summary>
         /// Number of tiles that a nuclear power plant can supply power to.
         /// </summary>
-        private const long NUCLEAR_POWER_STRENGTH = 2000;
+        public const long NUCLEAR_POWER_STRENGTH = 2000;
 
         /// <summary>
         /// How often to perform the short term census.
@@ -848,6 +848,7 @@ namespace MicropolisCore
 
         /// <summary>
         /// Stack of X/Y positions for traversing setting the power grid.
+        /// Список позиций, где находится электростанция
         /// </summary>
         private Position[] powerStackXY;
 

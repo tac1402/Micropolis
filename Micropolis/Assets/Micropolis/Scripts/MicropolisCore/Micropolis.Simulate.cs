@@ -5,7 +5,9 @@ namespace MicropolisCore
 {
     public partial class Micropolis
     {
-        private void simFrame()
+		public City City;
+
+		private void simFrame()
         {
             if (simSpeed == 0)
             {
@@ -924,9 +926,27 @@ namespace MicropolisCore
                     {
                         // Copy PWRBIT from powerGridMap
                         setZonePower(pos);
-                    }
 
-                    if (tile.Id >= (ushort) MapTileCharacters.ROADBASE && tile.Id < (ushort) MapTileCharacters.POWERBASE)
+                        if (tile.Id >= (ushort)MapTileCharacters.RESBASE && tile.Id <= (ushort)MapTileCharacters.LASTZONE)
+                        {
+                            int a = 1;
+                        }
+						else if (tile.Id >= (ushort)MapTileCharacters.SMOKEBEGIN && tile.Id < (ushort)MapTileCharacters.TILE_COUNT)
+						{
+							int a = 1;
+						}
+						else if (tile.Id >= (ushort)MapTileCharacters.POWERBASE && tile.Id <= (ushort)MapTileCharacters.LASTPOWER)
+                        {
+                            City.InitZone(Zone.PowerLines, tile);
+                            continue;
+                        }
+                        else 
+                        {
+							int a = 1;
+						}
+					}
+
+					if (tile.Id >= (ushort) MapTileCharacters.ROADBASE && tile.Id < (ushort) MapTileCharacters.POWERBASE)
                     {
                         doRoad(pos);
                         continue;
@@ -943,6 +963,7 @@ namespace MicropolisCore
                         doRail(pos);
                         continue;
                     }
+
 
                     if (tile.Id >= (ushort) MapTileCharacters.SOMETINYEXP &&
                         tile.Id <= (ushort) MapTileCharacters.LASTTINYEXP)

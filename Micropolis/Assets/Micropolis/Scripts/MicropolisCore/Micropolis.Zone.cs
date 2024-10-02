@@ -1,8 +1,5 @@
 ﻿using UnityEngine;
 using System;
-using UnityEngine.UIElements;
-using static UnityEditor.PlayerSettings;
-using UnityEngine.Tilemaps;
 
 namespace MicropolisCore
 {
@@ -72,11 +69,13 @@ namespace MicropolisCore
             short tpop, zscore, TrfGood;
 
             //ushort tile = (ushort) (oldMap[pos.posX,pos.posY] & (ushort) MapTileBits.LOMASK);
-			int tile = map[new Vector3(pos.posX, 0, pos.posY)].Id;
+			TileInfo tile = map[new Vector3(pos.posX, 0, pos.posY)];
+
+			City.InitZone(Zone.Industrial, tile);
 
 			indZonePop++;
             setSmoke(pos, zonePower);
-            tpop = getIndZonePop((ushort)tile);
+            tpop = getIndZonePop((ushort)tile.Id);
             indPop += tpop;
 
             if (tpop > getRandom(5))
@@ -248,10 +247,12 @@ namespace MicropolisCore
             short zscore, locvalve, value;
 
             //ushort tile = (ushort) (oldMap[pos.posX,pos.posY] & (ushort) MapTileBits.LOMASK);
-			int tile = map[new Vector3(pos.posX, 0, pos.posY)].Id;
+			TileInfo tile = map[new Vector3(pos.posX, 0, pos.posY)];
+
+			City.InitZone(Zone.Commercial, tile);
 
 			comZonePop++;
-            tpop = getComZonePop((ushort)tile);
+            tpop = getComZonePop((ushort)tile.Id);
             comPop += tpop;
 
             if (tpop > getRandom(5))
@@ -393,14 +394,16 @@ namespace MicropolisCore
             short[] meltdownTable = { 30000, 20000, 10000 };
 
             //ushort tile = (ushort)(oldMap[pos.posX,pos.posY] & (ushort) MapTileBits.LOMASK);
-			int tile = map[new Vector3(pos.posX, 0, pos.posY)].Id;
+            TileInfo tile = map[new Vector3(pos.posX, 0, pos.posY)];
 
-			switch (tile)
+			switch (tile.Id)
             {
 
                 case (ushort) MapTileCharacters.POWERPLANT:
 
-                    coalPowerPop++;
+					City.InitZone(Zone.CoalPowerPlant, tile);
+
+					coalPowerPop++;
 
                     if ((cityTime & 7) == 0)
                     {
@@ -414,8 +417,8 @@ namespace MicropolisCore
 
                 case (ushort)MapTileCharacters.NUCLEAR:
 
-                    //assert(LEVEL_COUNT == LENGTH_OF(meltdownTable));
-
+					City.InitZone(Zone.NuclearPowerPlant, tile);
+					
                     if (enableDisasters && getRandom(meltdownTable[(int) gameLevel]) == 0)
                     {
                         doMeltdown(pos);
@@ -773,15 +776,17 @@ namespace MicropolisCore
             resZonePop++;
 
             //ushort tile = (ushort)(oldMap[pos.posX, pos.posY] & (ushort) MapTileBits.LOMASK);
-			int tile = map[new Vector3(pos.posX, 0, pos.posY)].Id;
+			TileInfo tile = map[new Vector3(pos.posX, 0, pos.posY)];
 
-			if (tile == (ushort) MapTileCharacters.FREEZ)
+            City.InitZone(Zone.Residential, tile);
+
+			if (tile.Id == (ushort) MapTileCharacters.FREEZ)
             {
                 tpop = doFreePop(pos);
             }
             else
             {
-                tpop = getResZonePop((ushort)tile);
+                tpop = getResZonePop((ushort)tile.Id);
             }
 
             resPop += tpop;
@@ -803,7 +808,7 @@ namespace MicropolisCore
                 return;
             }
 
-            if (tile == (ushort) MapTileCharacters.FREEZ || (getRandom16() & 7) != 0)
+            if (tile.Id == (ushort) MapTileCharacters.FREEZ || (getRandom16() & 7) != 0)
             {
                 locvalue = evalRes(pos, TrfGood);
                 zscore = (short) (resValve + locvalue);

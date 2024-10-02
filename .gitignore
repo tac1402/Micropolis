@@ -6,6 +6,8 @@
 Logs/
 Assets/AssetStoreTools*
 
+Install/
+
 # Visual Studio 2015 cache directory
 .vs/
 

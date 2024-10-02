@@ -1,13 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Tilemaps;
-using UnityEngine.UI;
 using System.IO;
 
 #if UNITY_EDITOR
 using UnityEditor;
-#endif
 
 public class TilemapConvert : MonoBehaviour
 {
@@ -96,3 +93,5 @@ public class TilemapConvert : MonoBehaviour
 	}
 
 }
+
+#endif

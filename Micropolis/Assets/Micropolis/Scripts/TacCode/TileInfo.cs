@@ -27,6 +27,7 @@ public class TileInfo
 	public bool IsBulldozable; // bit 12, tile is bulldozable.
 	public bool IsCenter; // центр здания
 
+	public bool IsInit;
 	public bool IsChanged;
 
 	public TileInfo() { }

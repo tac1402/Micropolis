@@ -27,8 +27,10 @@ namespace MicropolisGame
             //_tileManager = new TileManager(_engine);
             _callbacks = new CallbackManager(_engine);
             city = GetComponent<City>();
+            city.Init();
             city.engine = _engine;
             city.PreLoadTiles();
+            _engine.City = city;
         }
 
         private void Update()
@@ -50,16 +52,12 @@ namespace MicropolisGame
 
         public void StartNewCity()
         {
-            Debug.Log("Initing Game");
             _engine.initGame();
-            Debug.Log("Initing Simulation");
             _engine.simInit();
-            Debug.Log("Generating Map");
             _engine.generateMap();
-            Debug.Log("Setting Speed");
             _engine.setSpeed(simSpeed);
 
-            Debug.Log("Etcetera");
+            city.InitTile();
             _engine.doSimInit();
             _engine.setEnableDisasters(false);
         }
@@ -70,7 +68,9 @@ namespace MicropolisGame
             _engine.simInit();
             _engine.loadCity("cities" + Path.DirectorySeparatorChar + cityFileName);
             _engine.setSpeed(simSpeed);
-            _engine.doSimInit();
+
+			city.InitTile();
+			_engine.doSimInit();
             _engine.setEnableDisasters(false);
         }
 

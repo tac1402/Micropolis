@@ -100,19 +100,19 @@
 
 		/* Линии электропередач */
 		HPOWER = 208,
-        VPOWER = 209,
-        LHPOWER = 210,
-        LVPOWER = 211,
-        LVPOWER2 = 212,
-        LVPOWER3 = 213,
-        LVPOWER4 = 214,
-        LVPOWER5 = 215,
-        LVPOWER6 = 216,
-        LVPOWER7 = 217,
-        LVPOWER8 = 218,
-        LVPOWER9 = 219,
-        LVPOWER10 = 220,
-        RAILHPOWERV = 221, // Horizontal rail, vertical power
+        //VPOWER = 209,
+        //LHPOWER = 210,
+        //LVPOWER = 211,
+        //LVPOWER2 = 212,
+        //LVPOWER3 = 213,
+        //LVPOWER4 = 214,
+        //LVPOWER5 = 215,
+        //LVPOWER6 = 216,
+        //LVPOWER7 = 217,
+        //LVPOWER8 = 218,
+        //LVPOWER9 = 219,
+        //LVPOWER10 = 220,
+        //RAILHPOWERV = 221, // Horizontal rail, vertical power
         RAILVPOWERH = 222, // Vertical rail, horizontal power
         POWERBASE = HPOWER,
         LASTPOWER = RAILVPOWERH,
@@ -260,7 +260,7 @@
 
         // Airport (6x6) 709 - 744
         //AIRPORTBASE = 709,
-        RADAR = 711,
+        //RADAR = 711,
         AIRPORT = 716,
 
         // Coal power plant (4x4) 745-760
@@ -297,21 +297,22 @@
         HBRDG2 = 830,
         HBRDG3 = 831,
         HBRDG_END = 832,
-        //RADAR0 = 832,
-        //RADAR1 = 833,
-        //RADAR2 = 834,
-        //RADAR3 = 835,
-        //RADAR4 = 836,
-        //RADAR5 = 837,
-        //RADAR6 = 838,
-        //RADAR7 = 839,
-        //FOUNTAIN = 840,
-        // tile 841 -- 843: fountain animation.
-        //INDBASE2 = 844,
-        //TELEBASE = 844,
-        // tile 845 -- 850 ?
-        //TELELAST = 851,
-        SMOKEBASE = 852,
+		//RADAR0 = 832,
+		//RADAR1 = 833,
+		//RADAR2 = 834,
+		//RADAR3 = 835,
+		//RADAR4 = 836,
+		//RADAR5 = 837,
+		//RADAR6 = 838,
+		//RADAR7 = 839,
+		//FOUNTAIN = 840,
+		// tile 841 -- 843: fountain animation.
+		//INDBASE2 = 844,
+		//TELEBASE = 844,
+		// tile 845 -- 850 ?
+		//TELELAST = 851,
+		SMOKEBEGIN = 852,
+		SMOKEBASE = 852,
         // tile 853 -- 859 ?
         //TINYEXP = 860,
         // tile 861 -- 863 ?
