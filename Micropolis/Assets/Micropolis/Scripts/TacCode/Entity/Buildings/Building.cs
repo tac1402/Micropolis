@@ -8,9 +8,12 @@ public class Building : MonoBehaviour
 {
 
 	public int IdView;
+	public Vector3 Center;
 
-	public virtual void InitBuilding(int argId, Net argNet)
+	public virtual void InitBuilding(int argId, Vector3 argCenter, Net argNet)
 	{
+		IdView = argId;
+		Center = argCenter;
 	}
 
 	public void InitPorts(ConnectPortType argPortType, Processor argProcessor, Net argNet)
@@ -20,7 +23,6 @@ public class Building : MonoBehaviour
 
 	public void InitPorts(ConnectPortType argPortType, Connect argConnect, Net argNet)
 	{
-		IdView = argConnect.Id;
 		argConnect.Ports = GetComponentsInChildren<Port>();
 		foreach (Port p in argConnect.Ports)
 		{

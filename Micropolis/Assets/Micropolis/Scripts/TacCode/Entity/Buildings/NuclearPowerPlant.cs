@@ -8,8 +8,9 @@ public class NuclearPowerPlant : Building
 {
 	public NuclearPowerPlantProcessor Processor = new NuclearPowerPlantProcessor();
 
-	public override void InitBuilding(int argId, Net argNet)
+	public override void InitBuilding(int argId, Vector3 argCenter, Net argNet)
 	{
+		base.InitBuilding(argId, argCenter, argNet);
 		Processor.Id = argId;
 		InitPorts(ConnectPortType.Out, Processor, argNet);
 		argNet.AddProcessor(Processor);

@@ -9,8 +9,9 @@ public class Residential : Building
 {
 	public ResidentialProcessor Processor = new ResidentialProcessor();
 
-	public override void InitBuilding(int argId, Net argNet)
+	public override void InitBuilding(int argId, Vector3 argCenter, Net argNet)
 	{
+		base.InitBuilding(argId, argCenter, argNet);
 		Processor.Id = argId;
 		InitPorts(ConnectPortType.InOut, Processor, argNet);
 		argNet.AddProcessor(Processor);

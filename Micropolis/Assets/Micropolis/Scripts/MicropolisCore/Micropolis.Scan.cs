@@ -68,19 +68,23 @@ namespace MicropolisCore
             {
                 for (int y = 0; y < WORLD_H; y++)
                 {
-                    TileInfo mapValue = map[new Vector3(x, 0, y)];
-                    //if ((ushort)(mapValue & (ushort) MapTileBits.IsCenter) != 0)
-                    if (mapValue.IsCenter)
+					Vector3 position = new Vector3(x, 0, y);
+                    if (map.ContainsKey(position))
                     {
-						//ushort mapTile = (ushort)(mapValue & (ushort)MapTileBits.LOMASK);
-						ushort mapTile = (ushort) mapValue.Id;
-						int pop = getPopulationDensity(new Position(x, y), mapTile) * 8;
-                        pop = Math.Min(pop, 254);
+                        TileInfo mapValue = map[new Vector3(x, 0, y)];
 
-                        tempMap1.worldSet(x, y, (Byte)pop);
-                        Xtot += x;
-                        Ytot += y;
-                        Ztot++;
+                        if (mapValue.IsCenter)
+                        {
+                            //ushort mapTile = (ushort)(mapValue & (ushort)MapTileBits.LOMASK);
+                            ushort mapTile = (ushort)mapValue.Id;
+                            int pop = getPopulationDensity(new Position(x, y), mapTile) * 8;
+                            pop = Math.Min(pop, 254);
+
+                            tempMap1.worldSet(x, y, (Byte)pop);
+                            Xtot += x;
+                            Ytot += y;
+                            Ztot++;
+                        }
                     }
                 }
             }
@@ -187,21 +191,24 @@ namespace MicropolisCore
                     {
                         for (My = worldY; My <= worldY + 1; My++)
                         {
-                            //loc = (oldMap[Mx,My] & (ushort) MapTileBits.LOMASK);
-							loc = map[new Vector3(Mx, 0, My)].Id;
-							if (loc != 0)
+							Vector3 position = new Vector3(Mx, 0, My);
+                            if (map.ContainsKey(position))
                             {
-                                if (loc < (ushort) MapTileCharacters.RUBBLE)
+                                loc = map[new Vector3(Mx, 0, My)].Id;
+                                if (loc != 0)
                                 {
-                                    // Increment terrain memory.
-                                    byte value = tempMap3.get(x >> 1, y >> 1);
-                                    tempMap3.set(x >> 1, y >> 1, (byte) (value + 15));
-                                    continue;
-                                }
-                                pollutionLevel += getPollutionValue(loc);
-                                if (loc >= (ushort) MapTileCharacters.ROADBASE)
-                                {
-                                    landValueFlag = true;
+                                    if (loc < (ushort)MapTileCharacters.RUBBLE)
+                                    {
+                                        // Increment terrain memory.
+                                        byte value = tempMap3.get(x >> 1, y >> 1);
+                                        tempMap3.set(x >> 1, y >> 1, (byte)(value + 15));
+                                        continue;
+                                    }
+                                    pollutionLevel += getPollutionValue(loc);
+                                    if (loc >= (ushort)MapTileCharacters.ROADBASE)
+                                    {
+                                        landValueFlag = true;
+                                    }
                                 }
                             }
                         }

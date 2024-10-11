@@ -68,10 +68,12 @@ namespace MicropolisCore
         {
             short tpop, zscore, TrfGood;
 
-            //ushort tile = (ushort) (oldMap[pos.posX,pos.posY] & (ushort) MapTileBits.LOMASK);
-			TileInfo tile = map[new Vector3(pos.posX, 0, pos.posY)];
 
-			City.InitZone(Zone.Industrial, tile);
+
+            Vector3 center = new Vector3(pos.posX, 0, pos.posY);
+			TileInfo tile = map[center];
+
+			City.InitZone(Zone.Industrial, tile, center);
 
 			indZonePop++;
             setSmoke(pos, zonePower);
@@ -247,9 +249,10 @@ namespace MicropolisCore
             short zscore, locvalve, value;
 
             //ushort tile = (ushort) (oldMap[pos.posX,pos.posY] & (ushort) MapTileBits.LOMASK);
-			TileInfo tile = map[new Vector3(pos.posX, 0, pos.posY)];
+            Vector3 center = new Vector3(pos.posX, 0, pos.posY);
+			TileInfo tile = map[center];
 
-			City.InitZone(Zone.Commercial, tile);
+			City.InitZone(Zone.Commercial, tile, center);
 
 			comZonePop++;
             tpop = getComZonePop((ushort)tile.Id);
@@ -393,15 +396,15 @@ namespace MicropolisCore
             // Bigger numbers reduce chance of nuclear melt down
             short[] meltdownTable = { 30000, 20000, 10000 };
 
-            //ushort tile = (ushort)(oldMap[pos.posX,pos.posY] & (ushort) MapTileBits.LOMASK);
-            TileInfo tile = map[new Vector3(pos.posX, 0, pos.posY)];
+            Vector3 center = new Vector3(pos.posX, 0, pos.posY);
+			TileInfo tile = map[center];
 
 			switch (tile.Id)
             {
 
                 case (ushort) MapTileCharacters.POWERPLANT:
 
-					City.InitZone(Zone.CoalPowerPlant, tile);
+					City.InitZone(Zone.CoalPowerPlant, tile, center);
 
 					coalPowerPop++;
 
@@ -417,7 +420,7 @@ namespace MicropolisCore
 
                 case (ushort)MapTileCharacters.NUCLEAR:
 
-					City.InitZone(Zone.NuclearPowerPlant, tile);
+					City.InitZone(Zone.NuclearPowerPlant, tile, center);
 					
                     if (enableDisasters && getRandom(meltdownTable[(int) gameLevel]) == 0)
                     {
@@ -775,10 +778,10 @@ namespace MicropolisCore
 
             resZonePop++;
 
-            //ushort tile = (ushort)(oldMap[pos.posX, pos.posY] & (ushort) MapTileBits.LOMASK);
-			TileInfo tile = map[new Vector3(pos.posX, 0, pos.posY)];
+            Vector3 center = new Vector3(pos.posX, 0, pos.posY);
+			TileInfo tile = map[center];
 
-            City.InitZone(Zone.Residential, tile);
+            City.InitZone(Zone.Residential, tile, center);
 
 			if (tile.Id == (ushort) MapTileCharacters.FREEZ)
             {

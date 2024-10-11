@@ -879,100 +879,103 @@ namespace MicropolisCore
             {
                 for (int y = 0; y < WORLD_H; y++)
                 {
-                    //var mapVal = oldMap[x, y];
-                    //ushort tile = (ushort)(mapVal & (ushort)MapTileBits.LOMASK); // Make off status bits
-                    TileInfo tile = map[new Vector3(x, 0, y)];
+                    Vector3 position = new Vector3(x, 0, y);
 
-					if (tile.Id == (ushort) MapTileCharacters.DIRT)
+                    if (map.ContainsKey(position))
                     {
-                        continue;
-                    }
+                        TileInfo tile = map[position];
 
-
-                    if (tile.Id < (ushort) MapTileCharacters.FLOOD)
-                    {
-                        continue;
-                    }
-
-                    // tile >= FLOOD
-
-                    var pos = new Position(x, y);
-
-                    if (tile.Id < (ushort) MapTileCharacters.ROADBASE)
-                    {
-                        if (tile.Id >= (ushort) MapTileCharacters.FIREBASE)
+                        if (tile.Id == (ushort)MapTileCharacters.DIRT)
                         {
-                            firePop++;
-                            if ((getRandom16() & 3) == 0)
+                            continue;
+                        }
+
+
+                        if (tile.Id < (ushort)MapTileCharacters.FLOOD)
+                        {
+                            continue;
+                        }
+
+                        // tile >= FLOOD
+
+                        var pos = new Position(x, y);
+
+                        if (tile.Id < (ushort)MapTileCharacters.ROADBASE)
+                        {
+                            if (tile.Id >= (ushort)MapTileCharacters.FIREBASE)
                             {
-                                doFire(pos); // 1 in 4 times
+                                firePop++;
+                                if ((getRandom16() & 3) == 0)
+                                {
+                                    doFire(pos); // 1 in 4 times
+                                }
+                                continue;
                             }
+
+                            if (tile.Id < (ushort)MapTileCharacters.RADTILE)
+                            {
+                                doFlood(pos);
+                            }
+                            else
+                            {
+                                doRadTile(pos);
+                            }
+
                             continue;
                         }
 
-                        if (tile.Id < (ushort) MapTileCharacters.RADTILE)
+                        if (newPower && tile.CanConduct)
                         {
-                            doFlood(pos);
-                        }
-                        else
-                        {
-                            doRadTile(pos);
+                            // Copy PWRBIT from powerGridMap
+                            setZonePower(pos);
+
+                            if (tile.Id >= (ushort)MapTileCharacters.RESBASE && tile.Id <= (ushort)MapTileCharacters.LASTZONE)
+                            {
+                                int a = 1;
+                            }
+                            else if (tile.Id >= (ushort)MapTileCharacters.SMOKEBEGIN && tile.Id < (ushort)MapTileCharacters.TILE_COUNT)
+                            {
+                                int a = 1;
+                            }
+                            else if (tile.Id >= (ushort)MapTileCharacters.POWERBASE && tile.Id <= (ushort)MapTileCharacters.LASTPOWER)
+                            {
+                                City.InitZone(Zone.PowerLines, tile, position);
+                                continue;
+                            }
+                            else
+                            {
+                                int a = 1;
+                            }
                         }
 
-                        continue;
-                    }
-
-                    if (newPower && tile.CanConduct)
-                    {
-                        // Copy PWRBIT from powerGridMap
-                        setZonePower(pos);
-
-                        if (tile.Id >= (ushort)MapTileCharacters.RESBASE && tile.Id <= (ushort)MapTileCharacters.LASTZONE)
+                        if (tile.Id >= (ushort)MapTileCharacters.ROADBASE && tile.Id < (ushort)MapTileCharacters.POWERBASE)
                         {
-                            int a = 1;
-                        }
-						else if (tile.Id >= (ushort)MapTileCharacters.SMOKEBEGIN && tile.Id < (ushort)MapTileCharacters.TILE_COUNT)
-						{
-							int a = 1;
-						}
-						else if (tile.Id >= (ushort)MapTileCharacters.POWERBASE && tile.Id <= (ushort)MapTileCharacters.LASTPOWER)
-                        {
-                            City.InitZone(Zone.PowerLines, tile);
+                            doRoad(pos);
                             continue;
                         }
-                        else 
+
+                        if (tile.IsCenter)
                         {
-							int a = 1;
-						}
-					}
+                            doZone(pos);
+                            continue;
+                        }
 
-					if (tile.Id >= (ushort) MapTileCharacters.ROADBASE && tile.Id < (ushort) MapTileCharacters.POWERBASE)
-                    {
-                        doRoad(pos);
-                        continue;
+                        if (tile.Id >= (ushort)MapTileCharacters.RAILBASE && tile.Id < (ushort)MapTileCharacters.RESBASE)
+                        {
+                            doRail(pos);
+                            continue;
+                        }
+
+
+                        if (tile.Id >= (ushort)MapTileCharacters.SOMETINYEXP &&
+                            tile.Id <= (ushort)MapTileCharacters.LASTTINYEXP)
+                        {
+                            // clear AniRubble
+                            //oldMap[x, y] = randomRubble();
+                            map[new Vector3(x, 0, y)].Id = randomRubble();
+                            map[new Vector3(x, 0, y)].IsBulldozable = true;
+                        }
                     }
-
-                    if (tile.IsCenter)
-                    {
-                        doZone(pos);
-                        continue;
-                    }
-
-                    if (tile.Id >= (ushort) MapTileCharacters.RAILBASE && tile.Id < (ushort) MapTileCharacters.RESBASE)
-                    {
-                        doRail(pos);
-                        continue;
-                    }
-
-
-                    if (tile.Id >= (ushort) MapTileCharacters.SOMETINYEXP &&
-                        tile.Id <= (ushort) MapTileCharacters.LASTTINYEXP)
-                    {
-                        // clear AniRubble
-                        //oldMap[x, y] = randomRubble();
-                        map[new Vector3(x, 0, y)].Id = randomRubble();
-						map[new Vector3(x, 0, y)].IsBulldozable = true;
-					}
 				}
             }
         }
