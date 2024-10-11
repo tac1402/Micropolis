@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3755771452756566319}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: View
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -43,7 +43,7 @@ GameObject:
   - component: {fileID: 2171923321729152890}
   - component: {fileID: 92148735605269465}
   - component: {fileID: 6025029780430597895}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Port1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -98,10 +98,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1034017e93cb1a47be8aa4c56b3f797, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MainConnect: {fileID: 0}
-  connectLayer:
+  ConnectLayer:
     serializedVersion: 2
-    m_Bits: 16384
+    m_Bits: 0
+  Color: {r: 0, g: 0, b: 1, a: 1}
+  ConnectType: 0
+  CurrentNet: {fileID: 0}
 --- !u!1 &5839423608069522078
 GameObject:
   m_ObjectHideFlags: 0
@@ -111,7 +113,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9003127410210053362}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Ports1x1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -146,7 +148,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2764663930665056890}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: tiles_839
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -181,7 +183,7 @@ GameObject:
   - component: {fileID: 132714795738274531}
   - component: {fileID: 3353472624893887398}
   - component: {fileID: 61502142966321445}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Port4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -236,10 +238,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1034017e93cb1a47be8aa4c56b3f797, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MainConnect: {fileID: 0}
-  connectLayer:
+  ConnectLayer:
     serializedVersion: 2
-    m_Bits: 16384
+    m_Bits: 0
+  Color: {r: 0, g: 0, b: 1, a: 1}
+  ConnectType: 0
+  CurrentNet: {fileID: 0}
 --- !u!1 &6887111112701879893
 GameObject:
   m_ObjectHideFlags: 0
@@ -252,7 +256,7 @@ GameObject:
   - component: {fileID: 6537339630668366285}
   - component: {fileID: 757787264406088521}
   - component: {fileID: 1606341461794285601}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: t00
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -356,7 +360,7 @@ GameObject:
   - component: {fileID: 7964319004151548781}
   - component: {fileID: 7338004563057683347}
   - component: {fileID: 6120324503683213478}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Port3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -411,10 +415,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1034017e93cb1a47be8aa4c56b3f797, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MainConnect: {fileID: 0}
-  connectLayer:
+  ConnectLayer:
     serializedVersion: 2
-    m_Bits: 16384
+    m_Bits: 0
+  Color: {r: 0, g: 0, b: 1, a: 1}
+  ConnectType: 0
+  CurrentNet: {fileID: 0}
 --- !u!1 &8452235123502949451
 GameObject:
   m_ObjectHideFlags: 0
@@ -426,7 +432,7 @@ GameObject:
   - component: {fileID: 2664832807590866910}
   - component: {fileID: 5035550332519571922}
   - component: {fileID: 7922932517450581786}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Port2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -481,7 +487,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1034017e93cb1a47be8aa4c56b3f797, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MainConnect: {fileID: 0}
-  connectLayer:
+  ConnectLayer:
     serializedVersion: 2
-    m_Bits: 16384
+    m_Bits: 0
+  Color: {r: 0, g: 0, b: 1, a: 1}
+  ConnectType: 0
+  CurrentNet: {fileID: 0}

@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4135448902048050834}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: tiles_29
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -41,7 +41,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3409621087129288150}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: View
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -76,7 +76,7 @@ GameObject:
   - component: {fileID: 57543700005591016}
   - component: {fileID: 1974265530988147059}
   - component: {fileID: 3569917954651717369}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: t00
   m_TagString: Untagged
   m_Icon: {fileID: 0}

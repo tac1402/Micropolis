@@ -239,13 +239,18 @@ public class City : MonoBehaviour
 
 public enum Zone
 {
-	CoalPowerPlant,
-	NuclearPowerPlant,
+	Bulldozer = 1,
+	Road = 2,
+	Railroad = 3,
+	PowerLines = 4,
+	Wood = 5,
 
-	Residential,
-	Commercial,
-	Industrial,
+	Residential = 10,
+	Commercial = 11,
+	Industrial =12,
 
-	PowerLines,
+
+	CoalPowerPlant = 20,
+	NuclearPowerPlant = 21,
 
 }

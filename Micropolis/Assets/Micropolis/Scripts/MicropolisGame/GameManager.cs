@@ -15,12 +15,14 @@ namespace MicropolisGame
 
         public short simSpeed;
 
+        public ObjectPlacer ObjectPlacer;
         private City city;
 
         private void Awake()
         {
             _engine = MicropolisUnityEngine.CreateUnityEngine();
-        }
+			ObjectPlacer.engine = _engine;
+		}
 
         private void Start()
         {

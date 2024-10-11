@@ -20,7 +20,6 @@ public class TileInfo
 		}
 	}
 
-
     public bool IsPower; // здание требует электричество
 	public bool CanConduct; // может проводить электричество 
 	public bool CanLit; // bit 13, tile can be lit.
