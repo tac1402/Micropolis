@@ -176,6 +176,8 @@ public class City : MonoBehaviour
 
 									tile.Tile = Instantiate(tiles[tile.Id], new Vector3(x - 1, 0, y - 1), Quaternion.Euler(0, -180, 0));
 									tile.Tile.transform.SetParent(gameObject.transform, false);
+									
+									engine.map.Add(position, tile);
 
 									InitZone(zone, tile, position);
 
@@ -197,12 +199,11 @@ public class City : MonoBehaviour
 							}
 							else
 							{
-								MeshRenderer mrTile = tiles[tile.Id].GetComponentInChildren<MeshRenderer>();
-								if (engine.map[new Vector3(x, 0, y)].Tile != null)
-								{
-									MeshRenderer mr = engine.map[new Vector3(x, 0, y)].Tile.GetComponentInChildren<MeshRenderer>();
-									mr.material = mrTile.sharedMaterial;
-								}
+								Destroy(tile.Tile);
+
+								tile.Tile = Instantiate(tiles[tile.Id], new Vector3(x, 0, y), Quaternion.Euler(0, -180, 0));
+								tile.Tile.transform.SetParent(gameObject.transform, false);
+
 								tile.IsChanged = false;
 							}
 						}

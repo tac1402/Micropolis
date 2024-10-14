@@ -19,14 +19,27 @@ namespace MicropolisCore
             if (movedPos.move(testDir))
             {
                 //if ((ushort)(oldMap[movedPos.posX, movedPos.posY] & (ushort) MapTileBits.CanConduct) == (ushort) MapTileBits.CanConduct)
-                if (map[new Vector3(movedPos.posX, 0, movedPos.posY)].CanConduct == true)
+
+                Vector3 position = new Vector3(movedPos.posX, 0, movedPos.posY);
+
+                if (map.ContainsKey(position))
                 {
-                    if (powerGridMap.worldGet(movedPos.posX, movedPos.posY) == 0)
+                    if (map[position].CanConduct == true)
                     {
-                        return true;
-                    }                    
+                        if (powerGridMap.worldGet(movedPos.posX, movedPos.posY) == 0)
+                        {
+                            return true;
+                        }
+                    }
                 }
-            }
+                else
+                {
+					if (powerGridMap.worldGet(movedPos.posX, movedPos.posY) == 0)
+					{
+						return true;
+					}
+				}
+			}
 
             return false;
         }

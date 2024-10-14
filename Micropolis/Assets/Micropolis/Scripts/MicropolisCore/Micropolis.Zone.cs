@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System;
+using UnityEngine.UIElements;
 
 namespace MicropolisCore
 {
@@ -76,7 +77,7 @@ namespace MicropolisCore
 			City.InitZone(Zone.Industrial, tile, center);
 
 			indZonePop++;
-            setSmoke(pos, zonePower);
+            //setSmoke(pos, zonePower);
             tpop = getIndZonePop((ushort)tile.Id);
             indPop += tpop;
 
@@ -414,7 +415,7 @@ namespace MicropolisCore
                     }
 
                     pushPowerStack(pos);
-                    coalSmoke(pos);
+                    //coalSmoke(pos);
 
                     return;
 
@@ -692,23 +693,25 @@ namespace MicropolisCore
                     {
                         Vector3 position = new Vector3(xx, 0, yy);
 
-						//ushort mapValue = oldMap[xx,yy];
-
-                        if (map[position].IsCenter == true)
+                        //ushort mapValue = oldMap[xx,yy];
+                        if (map.ContainsKey(position))
                         {
-                            continue;
+                            if (map[position].IsCenter == true)
+                            {
+                                continue;
+                            }
+
+                            //ushort mapTile = (ushort)(mapValue & (ushort) MapTileBits.LOMASK);
+
+                            if (map[position].Id < (ushort)MapTileCharacters.RUBBLE || map[position].Id >= (ushort)MapTileCharacters.ROADBASE)
+                            {
+                                //oldMap[xx,yy] = (ushort) (tile | (ushort) MapTileBits.CONDBIT | (ushort) MapTileBits.BURNBIT);
+
+                                map[position].Id = tile;
+                                map[position].CanConduct = true;
+                                map[position].CanLit = true;
+                            }
                         }
-
-                        //ushort mapTile = (ushort)(mapValue & (ushort) MapTileBits.LOMASK);
-
-                        if (map[position].Id < (ushort) MapTileCharacters.RUBBLE || map[position].Id >= (ushort) MapTileCharacters.ROADBASE)
-                        {
-                            //oldMap[xx,yy] = (ushort) (tile | (ushort) MapTileBits.CONDBIT | (ushort) MapTileBits.BURNBIT);
-
-                            map[position].Id = tile;
-							map[position].CanConduct = true;
-							map[position].CanLit = true;
-						}
 					}
                 }
             }
@@ -940,11 +943,16 @@ namespace MicropolisCore
 
                 if (Position.testBounds((short) xx, (short) yy))
                 {
-                    //oldMap[xx, yy] = (ushort)((ushort) MapTileCharacters.HOUSE + (ushort) MapTileBits.BLBNCNBIT + getRandom(2) + value * 3);
-                    map[new Vector3(xx, 0, yy)].Id = (ushort)((ushort)MapTileCharacters.HOUSE + getRandom(2) + value * 3);
-					map[new Vector3(xx, 0, yy)].CanConduct = true;
-					map[new Vector3(xx, 0, yy)].CanLit = true;
-					map[new Vector3(xx, 0, yy)].IsBulldozable = true;
+					//oldMap[xx, yy] = (ushort)((ushort) MapTileCharacters.HOUSE + (ushort) MapTileBits.BLBNCNBIT + getRandom(2) + value * 3);
+
+					Vector3 position = new Vector3(xx, 0, yy);
+                    if (map.ContainsKey(position))
+                    {
+                        map[position].Id = (ushort)((ushort)MapTileCharacters.HOUSE + getRandom(2) + value * 3);
+                        map[position].CanConduct = true;
+                        map[position].CanLit = true;
+                        map[position].IsBulldozable = true;
+                    }
 				}
 			}
         }
@@ -957,38 +965,42 @@ namespace MicropolisCore
         /// <returns>Suitability.</returns>
         private short evalLot(int x, int y)
         {
-            short score;
+            short score = 1;
             short[] DX = {0, 1, 0, -1};
             short[] DY = {-1, 0, 1, 0};
 
-            // test for clear lot
-            //z = (short) (oldMap[x, y] & (ushort) MapTileBits.LOMASK);
-			int z = map[new Vector3(x, 0, y)].Id;
+			// test for clear lot
+			//z = (short) (oldMap[x, y] & (ushort) MapTileBits.LOMASK);
 
-			if (z > 0 && (z < (ushort) MapTileCharacters.RESBASE || z > (ushort) MapTileCharacters.RESBASE + 8))
+			Vector3 position = new Vector3(x, 0, y);
+            if (map.ContainsKey(position))
             {
-                return -1;
-            }
+                TileInfo tile0 = map[position];
 
-            score = 1;
+                //int z = map[new Vector3(x, 0, y)].Id;
 
-            for (z = 0; z < 4; z++)
-            {
-                int xx = x + DX[z];
-                int yy = y + DY[z];
-
-                if (Position.testBounds((short)xx, (short)yy))
+                if (tile0.Id > 0 && (tile0.Id < (ushort)MapTileCharacters.RESBASE || tile0.Id > (ushort)MapTileCharacters.RESBASE + 8))
                 {
-					TileInfo tile = map[new Vector3(xx, 0, yy)];
+                    return -1;
+                }
 
-					if (tile.Id != (ushort)MapTileCharacters.DIRT &&
-						tile.Id <= (ushort)MapTileCharacters.LASTROAD)
-					{
-						score++; // look for road
-					}
-				}
-			}
+                for (int z = 0; z < 4; z++)
+                {
+                    int xx = x + DX[z];
+                    int yy = y + DY[z];
 
+                    if (Position.testBounds((short)xx, (short)yy))
+                    {
+                        TileInfo tile = map[new Vector3(xx, 0, yy)];
+
+                        if (tile.Id != (ushort)MapTileCharacters.DIRT &&
+                            tile.Id <= (ushort)MapTileCharacters.LASTROAD)
+                        {
+                            score++; // look for road
+                        }
+                    }
+                }
+            }
             return score;
         }
 
@@ -1294,10 +1306,16 @@ namespace MicropolisCore
                     if (x >= 0 && x < WORLD_W && y >= 0 && y < WORLD_H)
                     {
                         //ushort tile = (ushort)(oldMap[x,y] & (ushort) MapTileBits.LOMASK);
-						ushort tile = (ushort)map[new Vector3(x, 0, y)].Id;
-						if (tile >= (ushort) MapTileCharacters.LHTHR && tile <= (ushort) MapTileCharacters.HHTHR)
+						//ushort tile = (ushort)map[new Vector3(x, 0, y)].Id;
+						Vector3 position = new Vector3(x, 0, y);
+                        if (map.ContainsKey(position))
                         {
-                            count++;
+                            TileInfo tile = map[position];
+
+                            if (tile.Id >= (ushort)MapTileCharacters.LHTHR && tile.Id <= (ushort)MapTileCharacters.HHTHR)
+                            {
+                                count++;
+                            }
                         }
                     }
                 }

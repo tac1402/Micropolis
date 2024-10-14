@@ -10,6 +10,7 @@ using MicropolisCore;
 using UnityEngine.Tilemaps;
 using Unity.VisualScripting.Antlr3.Runtime.Tree;
 using UnityEngine.UI;
+using UnityEngine.WSA;
 
 public class ObjectPlacer : MonoBehaviour
 {
@@ -47,6 +48,7 @@ public class ObjectPlacer : MonoBehaviour
 
 		if (building != null)
 		{
+			terrainPoint = building.Center;
 		}
 		else
 		{ 
@@ -82,7 +84,7 @@ public class ObjectPlacer : MonoBehaviour
 			case Zone.Bulldozer:
 				if (tile != null)
 				{
-					SetBuldozer(tile);
+					SetBuldozer(tile, argPoint);
 				}
 				break;
 			case Zone.Residential:
@@ -121,12 +123,70 @@ public class ObjectPlacer : MonoBehaviour
 			currentTile.IsChanged = true;
 		}
 	}
-	private void SetBuldozer(TileInfo currentTile)
+	private void SetBuldozer(TileInfo currentTile, Vector3 argPoint)
 	{
 		if (currentTile.Id >= (int)MapTileCharacters.TREEBASE && currentTile.Id <= (int)MapTileCharacters.WOODS5)
 		{
 			currentTile.Id = 0;
 			currentTile.IsChanged = true;
+		}
+
+		if (currentTile.Id >= 240 && currentTile.Id <= 826)
+		{
+			bool noCenter = false;
+			Vector2Int size = new Vector2Int(1, 1);
+
+			if (currentTile.Id == (ushort)MapTileCharacters.POWERPLANT)
+			{
+				size = new Vector2Int(2, 2);
+				noCenter = true;
+			}
+			else if (currentTile.Id == (ushort)MapTileCharacters.NUCLEAR)
+			{
+				size = new Vector2Int(2, 2);
+				noCenter = true;
+			}
+			else if (currentTile.Id == (ushort)MapTileCharacters.PORT)
+			{
+				size = new Vector2Int(2, 2);
+				noCenter = true;
+			}
+			else if (currentTile.Id == (ushort)MapTileCharacters.AIRPORT)
+			{
+				size = new Vector2Int(3, 3);
+				noCenter = true;
+				//centerOffset = new Vector3(1, 0, 1);
+			}
+
+
+
+			float dstep = 1.0f;
+			DiscreteMap_<int> mask = null;
+			if (noCenter == false)
+			{
+				mask = new DiscreteMap_<int>(argPoint, size, dstep);
+			}
+			else
+			{
+				mask = new DiscreteMap_<int>(argPoint, size, dstep, true);
+			}
+
+			for (int i = 0; i < mask.Count; i++)
+			{
+				Vector3 point = Discrete.Get2D(argPoint, dstep) + mask[i].To3();
+				TileInfo tile = null;
+				if (engine.map.ContainsKey(point))
+				{
+					tile = engine.map[point];
+				}
+				else
+				{ 
+					tile = new TileInfo();
+					engine.map.Add(point, tile);
+				}
+				tile.Id = 0;
+				tile.IsChanged = true;
+			}
 		}
 	}
 
