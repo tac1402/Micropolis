@@ -659,7 +659,7 @@ MonoBehaviour:
   CountOut: 0
   CountStore: 0
   CountInConnect: 0
-  HouseSingle:
+  SingleHouseModel:
   - {fileID: 242776128830605223, guid: 4fb892d58de7fe449bc327364c902eb7, type: 3}
   - {fileID: 617951817938991796, guid: 4bcc00bffbe4e6146ac543d0bde32911, type: 3}
   - {fileID: 617951817938991796, guid: 2ebfcda034cbb6b4989d7fc047c9cc40, type: 3}

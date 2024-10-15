@@ -941,10 +941,18 @@ namespace MicropolisCore
                 int xx = pos.posX + ZeX[BestLoc];
                 int yy = pos.posY + ZeY[BestLoc];
 
-                if (Position.testBounds((short) xx, (short) yy))
+                TileInfo tileInfo = map[new Vector3(pos.posX, 0, pos.posY)];
+                if (tileInfo != null)
                 {
-					//oldMap[xx, yy] = (ushort)((ushort) MapTileCharacters.HOUSE + (ushort) MapTileBits.BLBNCNBIT + getRandom(2) + value * 3);
+                    Residential residential = tileInfo.Tile.GetComponent<Residential>();
 
+                    int type = getRandom(2) + value * 3;
+                    Vector3 offset = new Vector3(ZeX[BestLoc], 0, ZeY[BestLoc]) + new Vector3(-1, 0, -1);
+					residential.AddSingleHouse(type, offset);
+                }
+
+                /*if (Position.testBounds((short) xx, (short) yy))
+                {
 					Vector3 position = new Vector3(xx, 0, yy);
                     if (map.ContainsKey(position))
                     {
@@ -953,7 +961,7 @@ namespace MicropolisCore
                         map[position].CanLit = true;
                         map[position].IsBulldozable = true;
                     }
-				}
+				}*/
 			}
         }
 
@@ -1220,8 +1228,8 @@ namespace MicropolisCore
             if (pop < 16)
             {
                 incRateOfGrowth(pos, -1);
-                z = 0;
-                for (x = (short) (pos.posX - 1); x <= pos.posX + 1; x++)
+                /*z = 0;
+				for (x = (short) (pos.posX - 1); x <= pos.posX + 1; x++)
                 {
                     for (y = (short) (pos.posY - 1); y <= pos.posY + 1; y++)
                     {
@@ -1243,9 +1251,16 @@ namespace MicropolisCore
                         }
                         z++;
                     }
-                }
-            }
-        }
+                }*/
+				TileInfo tileInfo = map[new Vector3(pos.posX, 0, pos.posY)];
+				if (tileInfo != null)
+				{
+					Residential residential = tileInfo.Tile.GetComponent<Residential>();
+					residential.RemoveSingleHouse();
+				}
+
+			}
+		}
 
         /// <summary>
         /// Compute land value at pos, taking pollution into account.
@@ -1297,9 +1312,9 @@ namespace MicropolisCore
         /// <returns>Number of single tile houses.</returns>
         private short doFreePop(Position pos)
         {
-            short count = 0;
+            int count = 0;
 
-            for (short x = (short) (pos.posX - 1); x <= pos.posX + 1; x++)
+            /*for (short x = (short) (pos.posX - 1); x <= pos.posX + 1; x++)
             {
                 for (short y = (short) (pos.posY - 1); y <= pos.posY + 1; y++)
                 {
@@ -1319,9 +1334,16 @@ namespace MicropolisCore
                         }
                     }
                 }
+            }*/
+
+            TileInfo tileInfo = map[new Vector3(pos.posX, 0, pos.posY)];
+            if (tileInfo != null)
+            {
+                Residential residential = tileInfo.Tile.GetComponent<Residential>();
+                count = residential.GetSingleHouseCount();
             }
 
-            return count;
+			return (short)count;
         }
 
         /// <summary>
