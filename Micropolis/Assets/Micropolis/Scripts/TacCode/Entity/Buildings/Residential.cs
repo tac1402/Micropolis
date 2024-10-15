@@ -7,6 +7,8 @@ using UnityEngine;
 
 public class Residential : Building
 {
+	public List<GameObject> HouseSingle = new List<GameObject>();
+
 	public ResidentialProcessor Processor = new ResidentialProcessor();
 
 	public override void InitBuilding(int argId, Vector3 argCenter, Net argNet)

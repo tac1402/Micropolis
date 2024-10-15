@@ -1355,7 +1355,7 @@ namespace MicropolisCore
             {
                 //oldMap[pos.posX, pos.posY] = (ushort)(mapValue & ~(ushort)MapTileBits.PWRBIT);
 				//map[position].Id = mapValue;
-				map[position].IsPower = true;
+				map[position].IsPower = false;
 				return false;
             }
         }

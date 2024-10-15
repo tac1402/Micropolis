@@ -653,6 +653,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IdView: 0
+  Center: {x: 0, y: 0, z: 0}
+  DebugMaterialId: 0
+  CountIn: 0
+  CountOut: 0
+  CountStore: 0
+  CountInConnect: 0
+  HouseSingle:
+  - {fileID: 242776128830605223, guid: 4fb892d58de7fe449bc327364c902eb7, type: 3}
+  - {fileID: 617951817938991796, guid: 4bcc00bffbe4e6146ac543d0bde32911, type: 3}
+  - {fileID: 617951817938991796, guid: 2ebfcda034cbb6b4989d7fc047c9cc40, type: 3}
+  - {fileID: 431585848247606986, guid: 3de90b35e7a1a654b985771269656b03, type: 3}
+  - {fileID: 4071115439644766807, guid: 1fe33e8006b37c642b016c4c687f81c5, type: 3}
+  - {fileID: 431585848247606986, guid: 35147b6c3b2e31646a044f7c251b8967, type: 3}
+  - {fileID: 6159075652517542285, guid: 83c29ceadb6373b48ab0d5f7c6cf24bd, type: 3}
+  - {fileID: 4118148972427511319, guid: 1be78a6f14b5ea943b0e6db927933c20, type: 3}
+  - {fileID: 1184468509789273790, guid: ca4a4293a87b2bb4fbb81a10fc75fd5d, type: 3}
+  - {fileID: 8376918519629811395, guid: c609f4f1573def64a8f02d6c084f3323, type: 3}
+  - {fileID: 3616132272295227670, guid: 11b6a5b6c51442342b8a6c2de1c25064, type: 3}
+  - {fileID: 3451279569580633984, guid: 39080fc4a29c5e744a5052d933911e5d, type: 3}
 --- !u!1 &5693992504682351213
 GameObject:
   m_ObjectHideFlags: 0
