@@ -1,16 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Xml;
 using TMPro;
 using UnityEngine;
 using TAC;
-using static UnityEditor.Progress;
 using MicropolisEngine;
 using MicropolisCore;
-using UnityEngine.Tilemaps;
-using Unity.VisualScripting.Antlr3.Runtime.Tree;
-using UnityEngine.UI;
-using UnityEngine.WSA;
 
 public class ObjectPlacer : MonoBehaviour
 {
@@ -110,6 +104,9 @@ public class ObjectPlacer : MonoBehaviour
 				{
 					SetZone(tile, UiManager.SelectedZone);
 				}
+				break;
+			case Zone.PowerLines:
+				SetPowerLines(tile);
 				break;
 		}
 	}
@@ -226,6 +223,21 @@ public class ObjectPlacer : MonoBehaviour
 		currentTile.IsCenter = true;
 		currentTile.IsChanged = true;
 	}
+
+	private void SetPowerLines(TileInfo currentTile)
+	{
+		if (currentTile != null)
+		{
+			if (currentTile.Id.In(0, 1) ||
+				(currentTile.Id >= (int)MapTileCharacters.TREEBASE && currentTile.Id <= (int)MapTileCharacters.WOODS5)
+				)
+			{
+				currentTile.Id = 220;
+				currentTile.IsChanged = true;
+			}
+		}
+	}
+
 
 	private bool AllowBuild(Vector3 argPoint, Vector2Int argSize, bool argNoCenter = false)
 	{

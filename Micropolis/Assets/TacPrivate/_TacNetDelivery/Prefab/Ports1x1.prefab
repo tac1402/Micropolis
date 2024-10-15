@@ -71,6 +71,8 @@ MonoBehaviour:
     m_Bits: 16384
   Color: {r: 0, g: 0, b: 1, a: 1}
   ConnectType: 0
+  PortIndex: 0
+  MaterialId: 1
   CurrentNet: {fileID: 0}
 --- !u!1 &1362152245498266647
 GameObject:
@@ -143,6 +145,8 @@ MonoBehaviour:
     m_Bits: 16384
   Color: {r: 0, g: 0, b: 1, a: 1}
   ConnectType: 0
+  PortIndex: 0
+  MaterialId: 1
   CurrentNet: {fileID: 0}
 --- !u!1 &2810621564918488296
 GameObject:
@@ -250,6 +254,8 @@ MonoBehaviour:
     m_Bits: 16384
   Color: {r: 0, g: 0, b: 1, a: 1}
   ConnectType: 0
+  PortIndex: 0
+  MaterialId: 1
   CurrentNet: {fileID: 0}
 --- !u!1 &8215594257744255939
 GameObject:
@@ -322,4 +328,6 @@ MonoBehaviour:
     m_Bits: 16384
   Color: {r: 0, g: 0, b: 1, a: 1}
   ConnectType: 0
+  PortIndex: 0
+  MaterialId: 1
   CurrentNet: {fileID: 0}

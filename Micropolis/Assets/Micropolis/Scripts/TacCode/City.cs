@@ -204,6 +204,11 @@ public class City : MonoBehaviour
 								tile.Tile = Instantiate(tiles[tile.Id], new Vector3(x, 0, y), Quaternion.Euler(0, -180, 0));
 								tile.Tile.transform.SetParent(gameObject.transform, false);
 
+								if (tile.Id >= (ushort)MapTileCharacters.HPOWER && tile.Id <= (ushort)MapTileCharacters.LASTPOWER)
+								{
+									InitZone(Zone.PowerLines, tile, position);
+								}
+
 								tile.IsChanged = false;
 							}
 						}
@@ -251,6 +256,9 @@ public class City : MonoBehaviour
 
 			NetD.Material produces;
 			NetD.Material consumes;
+			NetD.Material transfer;
+			transfer = new NetD.Material((int)MaterialType.Electro, 0, 100);
+
 			switch (zoneType)
 			{
 
@@ -277,7 +285,7 @@ public class City : MonoBehaviour
 					Residential residential = tile.Tile.GetComponent<Residential>();
 					residential.InitBuilding(ObjectIdCounter, argCenter, electroNet);
 					residential.Processor.AddInCommingMaterial(consumes);
-
+					residential.Processor.AddOutCommingMaterial(transfer);
 					break;
 				case Zone.Commercial:
 					consumes = new NetD.Material((int)MaterialType.Electro, 0, 9);
@@ -286,7 +294,7 @@ public class City : MonoBehaviour
 					Commercial commercial = tile.Tile.GetComponent<Commercial>();
 					commercial.InitBuilding(ObjectIdCounter, argCenter, electroNet);
 					commercial.Processor.AddInCommingMaterial(consumes);
-
+					commercial.Processor.AddOutCommingMaterial(transfer);
 					break;
 				case Zone.Industrial:
 					consumes = new NetD.Material((int)MaterialType.Electro, 0, 9);
@@ -295,7 +303,7 @@ public class City : MonoBehaviour
 					Industrial industrial = tile.Tile.GetComponent<Industrial>();
 					industrial.InitBuilding(ObjectIdCounter, argCenter, electroNet);
 					industrial.Processor.AddInCommingMaterial(consumes);
-
+					industrial.Processor.AddOutCommingMaterial(transfer);
 					break;
 				case Zone.PowerLines:
 					PowerLines powerLines = tile.Tile.GetComponent<PowerLines>();
