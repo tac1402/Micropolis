@@ -48,6 +48,20 @@ public class Residential : Building
 		SingleHouse.Remove(list[index]);
 	}
 
+
+	protected override void Debug()
+	{
+		base.Debug();
+		if (Processor.IsElectro == false)
+		{
+			StartElectroBlinking();
+		}
+		else
+		{ 
+			StopElectroBlinking();
+		}
+	}
+
 	public class ResidentialProcessor : Processor
 	{
 		public bool IsElectro = false;

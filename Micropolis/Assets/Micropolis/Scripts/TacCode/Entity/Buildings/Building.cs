@@ -8,6 +8,7 @@ using System.Diagnostics;
 
 public class Building : MonoBehaviour
 {
+	public GameObject ElectroArrow;
 
 	public int IdView;
 	public Vector3 Center;
@@ -51,6 +52,56 @@ public class Building : MonoBehaviour
 		}
 	}
 
+
+	private IEnumerator ElectroBlinking()
+	{
+		while (true)
+		{
+			Blinking();
+			yield return new WaitForSeconds(0.5f);
+		}
+	}
+
+	private bool IsShow = false;
+	private void Blinking()
+	{
+		if (ElectroArrow != null)
+		{
+			if (IsShow)
+			{
+				ElectroArrow.SetActive(false);
+				IsShow = false;
+			}
+			else
+			{
+				ElectroArrow.SetActive(true);
+				IsShow = true;
+			}
+		}
+	}
+
+	private Coroutine ElectroBlinkingHandle;
+
+	public void StartElectroBlinking()
+	{
+		if (ElectroBlinkingHandle == null)
+		{
+			ElectroBlinkingHandle = StartCoroutine(ElectroBlinking());
+		}
+	}
+
+	public void StopElectroBlinking()
+	{
+		if (ElectroBlinkingHandle != null)
+		{
+			StopCoroutine(ElectroBlinkingHandle);
+		}
+		if (ElectroArrow != null)
+		{
+			ElectroArrow.SetActive(false);
+			IsShow = false;
+		}
+	}
 
 	protected IEnumerator DebugTick()
 	{
