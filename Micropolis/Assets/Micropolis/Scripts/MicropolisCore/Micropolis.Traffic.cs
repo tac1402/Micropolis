@@ -146,14 +146,18 @@ namespace MicropolisCore
 
                 if (Position.testBounds(tx, ty))
                 {
+                    Vector3 position = new Vector3(tx, 0, ty);
 
-                    if (roadTest(map[new Vector3(tx, 0, ty)]))
+                    if (map.ContainsKey(position))
                     {
+                        if (roadTest(map[position]))
+                        {
 
-                        pos.posX = tx;
-                        pos.posY = ty;
+                            pos.posX = tx;
+                            pos.posY = ty;
 
-                        return true;
+                            return true;
+                        }
                     }
                 }
             }
