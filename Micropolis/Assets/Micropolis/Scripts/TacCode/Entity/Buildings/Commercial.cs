@@ -15,6 +15,19 @@ public class Commercial : Building
 		argNet.AddProcessor(Processor);
 	}
 
+	protected override void Debug()
+	{
+		base.Debug();
+		if (Processor.IsElectro == false)
+		{
+			StartElectroBlinking();
+		}
+		else
+		{
+			StopElectroBlinking();
+		}
+	}
+
 	public class CommercialProcessor : Processor
 	{
 		public bool IsElectro = false;

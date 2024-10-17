@@ -523,7 +523,7 @@ namespace MicropolisCore
         /// <summary>
         /// Power grid map.
         /// </summary>
-        private MapByte1 powerGridMap;
+        //private MapByte1 powerGridMap;
 
         /// <summary>
         /// Rate of growth map.
@@ -1067,7 +1067,7 @@ namespace MicropolisCore
             tempMap1 = new MapByte2(0);
             tempMap2 = new MapByte2(0);
             tempMap3 = new MapByte4(0);
-            powerGridMap = new MapByte1(0);
+            //powerGridMap = new MapByte1(0);
             rateOfGrowthMap = new MapShort8(0);
             fireStationMap = new MapShort8(0);
             fireStationEffectMap = new MapShort8(0);
@@ -1137,7 +1137,7 @@ namespace MicropolisCore
             populationDensityMap.clear();
             landValueMap.clear();
             crimeRateMap.clear();
-            powerGridMap.clear();
+            //powerGridMap.clear();
             terrainDensityMap.clear();
             rateOfGrowthMap.clear();
             fireStationMap.clear();

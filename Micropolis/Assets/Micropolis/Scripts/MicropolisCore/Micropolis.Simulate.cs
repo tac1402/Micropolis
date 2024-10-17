@@ -139,7 +139,7 @@ namespace MicropolisCore
                 case 11:
                     if (simCycle % speedPowerScan[speedIndex] == 0)
                     {
-                        doPowerScan();
+                        //doPowerScan();
                         newMapFlags[(int) MapType.MAP_TYPE_POWER] = 1;
                         newPower = true;
                     }
@@ -202,7 +202,7 @@ namespace MicropolisCore
             setValves();
             clearCensus();
             mapScan(0, WORLD_W);
-            doPowerScan();
+            //doPowerScan();
             newPower = true;
             pollutionTerrainLandValueScan();
             crimeScan();
@@ -217,7 +217,7 @@ namespace MicropolisCore
         /// <summary>
         /// Copy bits from powerGridMap to the PWRBIT in the map for all zones in the world.
         /// </summary>
-        public void doNilPower()
+        /*public void doNilPower()
         {
             short x, y;
 
@@ -233,7 +233,7 @@ namespace MicropolisCore
                     }
                 }
             }
-        }
+        }*/
 
         /// <summary>
         /// Decrease traffic memory.
@@ -341,7 +341,7 @@ namespace MicropolisCore
 
             /* This clears powermem */
             powerStackPointer = 0;
-            doPowerScan();
+            //doPowerScan();
             newPower = true; /* post rel */
 
             initSimLoad = 0;
@@ -428,9 +428,9 @@ namespace MicropolisCore
 
             // Set power map
             // TODO What purpose does this server? Weird...
-            powerGridMap.fill(1);
+            //powerGridMap.fill(1);
 
-            doNilPower();
+            //doNilPower();
 
             if (scenario >= ScenarioType.SC_COUNT)
             {
@@ -927,7 +927,7 @@ namespace MicropolisCore
                         if (newPower && tile.CanConduct)
                         {
                             // Copy PWRBIT from powerGridMap
-                            setZonePower(pos);
+                            //setZonePower(pos);
 
                             if (tile.Id >= (ushort)MapTileCharacters.RESBASE && tile.Id <= (ushort)MapTileCharacters.LASTZONE)
                             {

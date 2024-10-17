@@ -14,18 +14,20 @@ namespace MicropolisCore
         private void doZone(Position pos)
         {
             // Set Power Bit in Map from powerGridMap
-            bool zonePowerFlag = setZonePower(pos);
+            //bool zonePowerFlag = setZonePower(pos);
 
-            if (zonePowerFlag)
+            /*if (zonePowerFlag)
             {
                 poweredZoneCount++;
             }
             else
             {
                 unpoweredZoneCount++;
-            }
+            }*/
 
-            //ushort tile = (ushort)(oldMap[pos.posX,pos.posY] & (ushort) MapTileBits.LOMASK);
+            bool zonePowerFlag = false;
+
+			//ushort tile = (ushort)(oldMap[pos.posX,pos.posY] & (ushort) MapTileBits.LOMASK);
 			int tile = map[new Vector3(pos.posX, 0, pos.posY)].Id;
 
 			// Do special zones.
@@ -786,6 +788,14 @@ namespace MicropolisCore
 
             City.InitZone(Zone.Residential, tile, center);
 
+			if (tile != null)
+			{
+				Residential residential = tile.Tile.GetComponent<Residential>();
+				zonePower = residential.Processor.IsElectro;
+			}
+
+
+
 			if (tile.Id == (ushort) MapTileCharacters.FREEZ)
             {
                 tpop = doFreePop(pos);
@@ -1072,7 +1082,7 @@ namespace MicropolisCore
 				baseValue++;
             }
 
-            setZonePower(pos);
+            //setZonePower(pos);
             //oldMap[pos.posX, pos.posY] |= (ushort)MapTileBits.ZONEBIT + (ushort) MapTileBits.BULLBIT;
 			map[new Vector3(pos.posX, 0, pos.posY)].IsCenter = true;
 			map[new Vector3(pos.posX, 0, pos.posY)].IsBulldozable = true;
@@ -1351,7 +1361,7 @@ namespace MicropolisCore
         /// </summary>
         /// <param name="pos">Position to copy.</param>
         /// <returns>Does the tile have power?</returns>
-        private bool setZonePower(Position pos)
+        /*private bool setZonePower(Position pos)
         {
            // ushort mapValue = oldMap[pos.posX, pos.posY];
             //ushort tile = (ushort)(mapValue & (ushort) MapTileBits.LOMASK);
@@ -1380,7 +1390,7 @@ namespace MicropolisCore
 				map[position].IsPower = false;
 				return false;
             }
-        }
+        }*/
 
         /// <summary>
         /// Get commercial zone population number.

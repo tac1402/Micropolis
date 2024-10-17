@@ -12,7 +12,7 @@ namespace MicropolisCore
         /// <param name="pos">Position to start from.</param>
         /// <param name="testDir">Direction to investigate.</param>
         /// <returns>Unpowered tile has been found in the indicated direction.</returns>
-        private bool testForConductive(Position pos, Direction2 testDir)
+        /*private bool testForConductive(Position pos, Direction2 testDir)
         {
             var movedPos = new Position(pos);
 
@@ -42,14 +42,14 @@ namespace MicropolisCore
 			}
 
             return false;
-        }
+        }*/
 
         /// <summary>
         /// Scan the map for powered tiles, and copy them to the powerGridMap 
         /// array.
         /// Also warns the user about using too much power ('buy another power plant').
         /// </summary>
-        public void doPowerScan()
+        /*public void doPowerScan()
         {
             Direction2 anyDir, dir;
             int conNum;
@@ -97,7 +97,7 @@ namespace MicropolisCore
                     }
                 } while (conNum != 0);
             }
-        }
+        }*/
 
         /// <summary>
         /// Push position a pos onto the power stack if there is room.
