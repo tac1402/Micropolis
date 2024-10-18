@@ -173,6 +173,10 @@ namespace MicropolisCore
         bool roadTest(TileInfo tile)
         {
             //ushort tile = (ushort) (mv & (ushort) MapTileBits.LOMASK);
+            if (tile == null)
+            { 
+                return false;
+            }
 
             if (tile.Id < (ushort) MapTileCharacters.ROADBASE || tile.Id > (ushort) MapTileCharacters.LASTRAIL)
             {
@@ -263,41 +267,53 @@ namespace MicropolisCore
 
             if (pos.posY > 0)
             {
-                //ushort z = (ushort)(oldMap[pos.posX,pos.posY - 1] & (ushort)MapTileBits.LOMASK);
-				ushort z = (ushort)(map[new Vector3(pos.posX, 0, pos.posY - 1)].Id);
-				if (z >= l && z <= h)
+                Vector3 p = new Vector3(pos.posX, 0, pos.posY - 1);
+                if (map.ContainsKey(p))
                 {
-                    return true;
+                    ushort z = (ushort)(map[p].Id);
+                    if (z >= l && z <= h)
+                    {
+                        return true;
+                    }
                 }
             }
 
             if (pos.posX < (WORLD_W - 1))
             {
-                //ushort z = (ushort)(oldMap[pos.posX + 1,pos.posY] & (ushort) MapTileBits.LOMASK);
-				ushort z = (ushort)(map[new Vector3(pos.posX + 1, 0, pos.posY)].Id);
-				if (z >= l && z <= h)
+                Vector3 p = new Vector3(pos.posX + 1, 0, pos.posY);
+                if (map.ContainsKey(p))
                 {
-                    return true;
+                    ushort z = (ushort)(map[p].Id);
+                    if (z >= l && z <= h)
+                    {
+                        return true;
+                    }
                 }
             }
 
             if (pos.posY < (WORLD_H - 1))
             {
-                //ushort z = (ushort)(oldMap[pos.posX,pos.posY + 1] & (ushort)MapTileBits.LOMASK);
-				ushort z = (ushort)(map[new Vector3(pos.posX, 0, pos.posY + 1)].Id);
-				if (z >= l && z <= h)
+				Vector3 p = new Vector3(pos.posX, 0, pos.posY + 1);
+				if (map.ContainsKey(p))
                 {
-                    return true;
+                    ushort z = (ushort)(map[p].Id);
+                    if (z >= l && z <= h)
+                    {
+                        return true;
+                    }
                 }
             }
 
             if (pos.posX > 0)
             {
-                //ushort z = (ushort)(oldMap[pos.posX - 1,pos.posY] & (ushort) MapTileBits.LOMASK);
-				ushort z = (ushort)(map[new Vector3(pos.posX - 1, 0, pos.posY)].Id);
-				if (z >= l && z <= h)
+				Vector3 p = new Vector3(pos.posX - 1, 0, pos.posY);
+				if (map.ContainsKey(p))
                 {
-                    return true;
+                    ushort z = (ushort)(map[p].Id);
+                    if (z >= l && z <= h)
+                    {
+                        return true;
+                    }
                 }
             }
 
@@ -403,47 +419,55 @@ namespace MicropolisCore
             TileInfo defaultTile = new TileInfo();
             defaultTile.Id = defaultTileId;
 
+            Vector3 p = Vector3.zero;
+
 			switch (dir)
             {
                 case Direction2.DIR2_NORTH:
                     if (pos.posY > 0)
                     {
-                        //return (ushort)(oldMap[pos.posX,pos.posY - 1] & (ushort) MapTileBits.LOMASK);
-						return map[new Vector3(pos.posX, 0, pos.posY - 1)];
+                        p = new Vector3(pos.posX, 0, pos.posY - 1);
 					}
+					break;
 
-					return defaultTile;
-
-                case Direction2.DIR2_EAST:
+				case Direction2.DIR2_EAST:
                     if (pos.posX < WORLD_W - 1)
                     {
-                        //return (ushort)(oldMap[pos.posX + 1,pos.posY] & (ushort)MapTileBits.LOMASK);
-						return map[new Vector3(pos.posX + 1, 0, pos.posY)];
+                        p = new Vector3(pos.posX + 1, 0, pos.posY);
 					}
+					break;
 
-					return defaultTile;
-
-                case Direction2.DIR2_SOUTH:
+				case Direction2.DIR2_SOUTH:
                     if (pos.posY < WORLD_H - 1)
                     {
-                        //return (ushort)(oldMap[pos.posX,pos.posY + 1] & (ushort)MapTileBits.LOMASK);
-						return map[new Vector3(pos.posX, 0, pos.posY + 1)];
+                        p = new Vector3(pos.posX, 0, pos.posY + 1);
 					}
+					break;
 
-					return defaultTile;
-
-                case Direction2.DIR2_WEST:
+				case Direction2.DIR2_WEST:
                     if (pos.posX > 0)
                     {
-                        //return (ushort)(oldMap[pos.posX - 1,pos.posY] & (ushort)MapTileBits.LOMASK);
-						return map[new Vector3(pos.posX - 1, 0, pos.posY)];
+                        p = new Vector3(pos.posX - 1, 0, pos.posY);
 					}
-
-					return defaultTile;
-
-                default:
-                    return defaultTile;
+                    break;
             }
-        }
+
+            if (p == Vector3.zero)
+            {
+                return defaultTile;
+            }
+            else
+            {
+				if (map.ContainsKey(p))
+				{
+					return map[p];
+				}
+				else
+				{
+					return null;
+				}
+			}
+
+		}
     }
 }

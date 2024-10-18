@@ -101,7 +101,45 @@ namespace MicropolisCore
             {
                 for (int y = 0; y < tempMap2.MAP_H; y++)
                 {
-                    populationDensityMap.set(x, y, tempMap2.get(x, y));
+                    byte v = tempMap2.get(x, y);
+					populationDensityMap.set(x, y, v);
+
+                    if (v != 0)
+                    { 
+                        Vector3 p = new Vector3(x * 2, 0, y * 2);
+                        bool IsFind = false;
+                        if (map.ContainsKey(p))
+                        {
+                            IsFind = true;
+                        }
+                        else if (map.ContainsKey(p + new Vector3(-1, 0, 0)))
+                        {
+                            p += new Vector3(-1, 0, 0);
+                            IsFind = true;
+						}
+						else if (map.ContainsKey(p + new Vector3(0, 0, -1)))
+						{
+							p += new Vector3(0, 0, -1);
+							IsFind = true;
+						}
+						else if (map.ContainsKey(p + new Vector3(-1, 0, -1)))
+						{
+							p += new Vector3(-1, 0, -1);
+							IsFind = true;
+						}
+
+
+						if (IsFind)
+                        {
+							Residential residential = map[p].Tile.GetComponent<Residential>();
+							if (residential != null)
+							{
+								residential.PopulationDensity = v;
+							}
+						}
+
+
+					}
                 }
             }
 

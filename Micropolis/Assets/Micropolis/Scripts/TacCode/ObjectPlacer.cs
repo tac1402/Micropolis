@@ -108,6 +108,9 @@ public class ObjectPlacer : MonoBehaviour
 			case Zone.PowerLines:
 				SetPowerLines(tile);
 				break;
+			case Zone.Road:
+				SetRoad(tile);
+				break;
 		}
 	}
 
@@ -122,7 +125,8 @@ public class ObjectPlacer : MonoBehaviour
 	}
 	private void SetBuldozer(TileInfo currentTile, Vector3 argPoint)
 	{
-		if (currentTile.Id >= (int)MapTileCharacters.TREEBASE && currentTile.Id <= (int)MapTileCharacters.WOODS5)
+		if ((currentTile.Id >= (int)MapTileCharacters.TREEBASE && currentTile.Id <= (int)MapTileCharacters.WOODS5) ||
+			(currentTile.Id.In((int)MapTileCharacters.LVPOWER10, (int)MapTileCharacters.INTERSECTION)))
 		{
 			currentTile.Id = 0;
 			currentTile.IsChanged = true;
@@ -232,12 +236,25 @@ public class ObjectPlacer : MonoBehaviour
 				(currentTile.Id >= (int)MapTileCharacters.TREEBASE && currentTile.Id <= (int)MapTileCharacters.WOODS5)
 				)
 			{
-				currentTile.Id = 220;
+				currentTile.Id = (int)MapTileCharacters.LVPOWER10;
 				currentTile.IsChanged = true;
 			}
 		}
 	}
 
+	private void SetRoad(TileInfo currentTile)
+	{
+		if (currentTile != null)
+		{
+			if (currentTile.Id.In(0, 1) ||
+				(currentTile.Id >= (int)MapTileCharacters.TREEBASE && currentTile.Id <= (int)MapTileCharacters.WOODS5)
+				)
+			{
+				currentTile.Id = (int) MapTileCharacters.INTERSECTION;
+				currentTile.IsChanged = true;
+			}
+		}
+	}
 
 	private bool AllowBuild(Vector3 argPoint, Vector2Int argSize, bool argNoCenter = false)
 	{

@@ -3,12 +3,16 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TAC.NetD;
+using TMPro;
 using UnityEngine;
 
 public class Residential : Building
 {
 	public List<GameObject> SingleHouseModel = new List<GameObject>();
 	private Dictionary<Vector3, GameObject> SingleHouse = new Dictionary<Vector3, GameObject>();
+
+	public TMP_Text Info;
+	public int PopulationDensity;
 
 	public ResidentialProcessor Processor = new ResidentialProcessor();
 
@@ -60,6 +64,20 @@ public class Residential : Building
 		{ 
 			StopElectroBlinking();
 		}
+
+		if (Info != null)
+		{
+			if (PopulationDensity > 0)
+			{
+				Info.text = PopulationDensity.ToString();
+				Info.gameObject.SetActive(true);
+			}
+			else
+			{
+				Info.gameObject.SetActive(false);
+			}
+		}
+
 	}
 
 	public class ResidentialProcessor : Processor

@@ -865,14 +865,13 @@ namespace MicropolisCore
         /// <param name="value">Land value corrected for pollution.</param>
         private void doResIn(Position pos, int pop, int value)
         {
-            short pollution = populationDensityMap.worldGet(pos.posX, pos.posY);
+            short population = populationDensityMap.worldGet(pos.posX, pos.posY);
 
-            if (pollution > 128)
+            if (population > 128)
             {
                 return;
             }
 
-            //ushort tile = (ushort) (oldMap[pos.posX, pos.posY] & (ushort) MapTileBits.LOMASK);
 			int tile = map[new Vector3(pos.posX, 0, pos.posY)].Id;
 
 			if (tile == (ushort) MapTileCharacters.FREEZ)
@@ -884,7 +883,8 @@ namespace MicropolisCore
                     return;
                 }
 
-                if (populationDensityMap.worldGet(pos.posX, pos.posY) > 64)
+                byte densityPop = populationDensityMap.worldGet(pos.posX, pos.posY);
+				if (densityPop > 64)
                 {
                     resPlop(pos, 0, value);
                     incRateOfGrowth(pos, 8);
@@ -1057,11 +1057,14 @@ namespace MicropolisCore
 
                 if (Position.testBounds((short) xx, (short) yy))
                 {
-                    //x = (short)(oldMap[xx, yy] & (ushort) MapTileBits.LOMASK);
-                    int t= map[new Vector3(xx, 0, yy)].Id;
-					if (t >= (ushort) MapTileCharacters.FLOOD && t < (ushort) MapTileCharacters.ROADBASE)
+                    Vector3 p = new Vector3(xx, 0, yy);
+                    if (map.ContainsKey(p))
                     {
-                        return false;
+                        int t = map[p].Id;
+                        if (t >= (ushort)MapTileCharacters.FLOOD && t < (ushort)MapTileCharacters.ROADBASE)
+                        {
+                            return false;
+                        }
                     }
                 }
             }
@@ -1144,7 +1147,8 @@ namespace MicropolisCore
         {
             if (needHospital > 0)
             {
-                zonePlop(pos, (short) (MapTileCharacters.HOSPITAL - 4));
+                //Закомментированна сама постройка, т.к. не предсказуемо поведет себя, но не удалять
+                //zonePlop(pos, (short) (MapTileCharacters.HOSPITAL - 4));
                 needHospital = 0;
                 return;
             }

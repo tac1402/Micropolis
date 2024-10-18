@@ -111,7 +111,7 @@
         //LVPOWER7 = 217,
         //LVPOWER8 = 218,
         //LVPOWER9 = 219,
-        //LVPOWER10 = 220,
+        LVPOWER10 = 220,
         //RAILHPOWERV = 221, // Horizontal rail, vertical power
         RAILVPOWERH = 222, // Vertical rail, horizontal power
         POWERBASE = HPOWER,

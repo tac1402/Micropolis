@@ -470,7 +470,7 @@ namespace MicropolisCore
         /// <summary>
         /// Population density map.
         /// </summary>
-        private MapByte2 populationDensityMap;
+        public MapByte2 populationDensityMap;
 
         /// <summary>
         /// Traffic density map.
