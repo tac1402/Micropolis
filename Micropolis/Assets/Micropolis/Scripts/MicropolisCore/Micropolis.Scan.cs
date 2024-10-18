@@ -136,6 +136,18 @@ namespace MicropolisCore
 							{
 								residential.PopulationDensity = v;
 							}
+
+							Commercial commercial = map[p].Tile.GetComponent<Commercial>();
+							if (commercial != null)
+							{
+								commercial.PopulationDensity = v;
+							}
+
+							Industrial industrial = map[p].Tile.GetComponent<Industrial>();
+							if (industrial != null)
+							{
+								industrial.PopulationDensity = v;
+							}
 						}
 
 

@@ -1288,28 +1288,32 @@ namespace MicropolisCore
                 {
                     if (pos.posY > 0)
                     {
-						//if (oldMap[pos.posX,pos.posY - 1] == (ushort) MapTileCharacters.CHANNEL)
-						if (map[new Vector3(pos.posX, 0, pos.posY - 1)].Id == (ushort) MapTileCharacters.CHANNEL)
-						{
-							/* Horizontal open  */
-							for (z = 0; z < 7; z++)
-                            {
-                                x = pos.posX + HDx[z];
-                                y = pos.posY + HDy[z];
+                        Vector3 p = new Vector3(pos.posX, 0, pos.posY - 1);
 
-                                if (Position.testBounds((short) x, (short) y))
+                        if (map.ContainsKey(p))
+                        {
+                            if (map[p].Id == (ushort)MapTileCharacters.CHANNEL)
+                            {
+                                /* Horizontal open  */
+                                for (z = 0; z < 7; z++)
                                 {
-                                    //MPtem = oldMap[x,y];
-									MPtem = map[new Vector3(x, 0, y)].Id;
-									if (((MPtem & 15) == (HBRTAB2[z] & 15)) || MPtem == (int) MapTileCharacters.CHANNEL)
+                                    x = pos.posX + HDx[z];
+                                    y = pos.posY + HDy[z];
+
+                                    if (Position.testBounds((short)x, (short)y))
                                     {
-                                        //oldMap[x,y] = (ushort) HBRTAB[z];
-                                        map[new Vector3(x, 0, y)].Id = (ushort)HBRTAB[z];
-                                        if (HBRTABB[z] == 1) { map[new Vector3(x, 0, y)].IsBulldozable = true; };
-									}
-								}
+                                        //MPtem = oldMap[x,y];
+                                        MPtem = map[new Vector3(x, 0, y)].Id;
+                                        if (((MPtem & 15) == (HBRTAB2[z] & 15)) || MPtem == (int)MapTileCharacters.CHANNEL)
+                                        {
+                                            //oldMap[x,y] = (ushort) HBRTAB[z];
+                                            map[new Vector3(x, 0, y)].Id = (ushort)HBRTAB[z];
+                                            if (HBRTABB[z] == 1) { map[new Vector3(x, 0, y)].IsBulldozable = true; };
+                                        }
+                                    }
+                                }
+                                return true;
                             }
-                            return true;
                         }
                     }
                     return false;

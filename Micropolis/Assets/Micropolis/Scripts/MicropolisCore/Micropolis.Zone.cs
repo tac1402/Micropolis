@@ -78,6 +78,12 @@ namespace MicropolisCore
 
 			City.InitZone(Zone.Industrial, tile, center);
 
+			if (tile != null)
+			{
+				Industrial industrial = tile.Tile.GetComponent<Industrial>();
+				zonePower = industrial.Processor.IsElectro;
+			}
+
 			indZonePop++;
             //setSmoke(pos, zonePower);
             tpop = getIndZonePop((ushort)tile.Id);
@@ -256,6 +262,13 @@ namespace MicropolisCore
 			TileInfo tile = map[center];
 
 			City.InitZone(Zone.Commercial, tile, center);
+
+			if (tile != null)
+			{
+				Commercial commercial = tile.Tile.GetComponent<Commercial>();
+				zonePower = commercial.Processor.IsElectro;
+			}
+
 
 			comZonePop++;
             tpop = getComZonePop((ushort)tile.Id);
@@ -1069,6 +1082,7 @@ namespace MicropolisCore
                 }
             }
 
+            /*
             for (z = 0; z < 9; z++)
             {
                 int xx = pos.posX + Zx[z];
@@ -1089,6 +1103,22 @@ namespace MicropolisCore
             //oldMap[pos.posX, pos.posY] |= (ushort)MapTileBits.ZONEBIT + (ushort) MapTileBits.BULLBIT;
 			map[new Vector3(pos.posX, 0, pos.posY)].IsCenter = true;
 			map[new Vector3(pos.posX, 0, pos.posY)].IsBulldozable = true;
+            */
+
+            if (baseValue >= 612 && baseValue <= 684)
+            { 
+				TileInfo tileInfo = map[new Vector3(pos.posX, 0, pos.posY)];
+				if (tileInfo != null)
+				{
+					int index = (baseValue - 612) / 9;
+					Industrial industrial = tileInfo.Tile.GetComponent<Industrial>();
+                    tileInfo.Id = baseValue + 4;
+                    tileInfo.IsChanged = false;
+					industrial.ChangeLevel(index);
+				}
+			}
+
+
 
 			return true;
         }

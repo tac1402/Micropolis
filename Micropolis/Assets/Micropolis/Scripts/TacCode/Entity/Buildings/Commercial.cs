@@ -1,10 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using TAC.NetD;
+using TMPro;
 using UnityEngine;
 
 public class Commercial : Building
 {
+	public TMP_Text Info;
+	public int PopulationDensity;
+
 	public CommercialProcessor Processor = new CommercialProcessor();
 
 	public override void InitBuilding(int argId, Vector3 argCenter, Net argNet)
@@ -25,6 +29,19 @@ public class Commercial : Building
 		else
 		{
 			StopElectroBlinking();
+		}
+
+		if (Info != null)
+		{
+			if (PopulationDensity > 0)
+			{
+				Info.text = PopulationDensity.ToString();
+				Info.gameObject.SetActive(true);
+			}
+			else
+			{
+				Info.gameObject.SetActive(false);
+			}
 		}
 	}
 

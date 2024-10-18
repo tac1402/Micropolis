@@ -1,10 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
 using TAC.NetD;
+using TMPro;
 using UnityEngine;
+using static UnityEngine.UIElements.UxmlAttributeDescription;
 
 public class Industrial : Building
 {
+	public GameObject LevelRoot;
+	public List<GameObject> LevelModel = new List<GameObject>();
+	public GameObject CurrentLevel;
+
+	public TMP_Text Info;
+	public int PopulationDensity;
+
 	public IndustrialProcessor Processor = new IndustrialProcessor();
 
 	public override void InitBuilding(int argId, Vector3 argCenter, Net argNet)
@@ -16,6 +25,15 @@ public class Industrial : Building
 	}
 
 
+	public void ChangeLevel(int argType)
+	{
+		Destroy(CurrentLevel);
+		GameObject level = Instantiate(LevelModel[argType]);
+		level.transform.SetParent(LevelRoot.transform, false);
+
+		CurrentLevel = level;
+	}
+
 	protected override void Debug()
 	{
 		base.Debug();
@@ -26,6 +44,19 @@ public class Industrial : Building
 		else
 		{
 			StopElectroBlinking();
+		}
+
+		if (Info != null)
+		{
+			if (PopulationDensity > 0)
+			{
+				Info.text = PopulationDensity.ToString();
+				Info.gameObject.SetActive(true);
+			}
+			else
+			{
+				Info.gameObject.SetActive(false);
+			}
 		}
 	}
 
