@@ -1082,7 +1082,7 @@ namespace MicropolisCore
                 }
             }
 
-            /*
+			/*
             for (z = 0; z < 9; z++)
             {
                 int xx = pos.posX + Zx[z];
@@ -1105,9 +1105,10 @@ namespace MicropolisCore
 			map[new Vector3(pos.posX, 0, pos.posY)].IsBulldozable = true;
             */
 
-            if (baseValue >= 612 && baseValue <= 684)
+			TileInfo tileInfo = map[new Vector3(pos.posX, 0, pos.posY)];
+
+			if (baseValue >= 612 && baseValue <= 684)
             { 
-				TileInfo tileInfo = map[new Vector3(pos.posX, 0, pos.posY)];
 				if (tileInfo != null)
 				{
 					int index = (baseValue - 612) / 9;
@@ -1117,7 +1118,17 @@ namespace MicropolisCore
 					industrial.ChangeLevel(index);
 				}
 			}
-
+			else if (baseValue >= 423 && baseValue <= 603)
+			{
+				if (tileInfo != null)
+				{
+					int index = (baseValue - 423) / 9;
+					Commercial commercial = tileInfo.Tile.GetComponent<Commercial>();
+					tileInfo.Id = baseValue + 4;
+					tileInfo.IsChanged = false;
+					commercial.ChangeLevel(index);
+				}
+			}
 
 
 			return true;

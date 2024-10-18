@@ -11,6 +11,10 @@ public class Residential : Building
 	public List<GameObject> SingleHouseModel = new List<GameObject>();
 	private Dictionary<Vector3, GameObject> SingleHouse = new Dictionary<Vector3, GameObject>();
 
+	public GameObject LevelRoot;
+	public List<GameObject> LevelModel = new List<GameObject>();
+	public GameObject CurrentLevel;
+
 	public TMP_Text Info;
 	public int PopulationDensity;
 
@@ -50,6 +54,25 @@ public class Residential : Building
 		List<Vector3> list = SingleHouse.Keys.ToList();
 		Destroy(SingleHouse[list[index]]);
 		SingleHouse.Remove(list[index]);
+	}
+
+	public void RemoveAllSingleHouse()
+	{
+		foreach (Vector3 key in SingleHouse.Keys.ToList())
+		{
+			Destroy(SingleHouse[key]);
+		}
+		SingleHouse.Clear();
+	}
+
+	public void ChangeLevel(int argType)
+	{
+		RemoveAllSingleHouse();
+		Destroy(CurrentLevel);
+		GameObject level = Instantiate(LevelModel[argType]);
+		level.transform.SetParent(LevelRoot.transform, false);
+
+		CurrentLevel = level;
 	}
 
 

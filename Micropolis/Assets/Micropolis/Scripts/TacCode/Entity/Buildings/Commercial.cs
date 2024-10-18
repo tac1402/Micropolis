@@ -6,6 +6,10 @@ using UnityEngine;
 
 public class Commercial : Building
 {
+	public GameObject LevelRoot;
+	public List<GameObject> LevelModel = new List<GameObject>();
+	public GameObject CurrentLevel;
+
 	public TMP_Text Info;
 	public int PopulationDensity;
 
@@ -17,6 +21,15 @@ public class Commercial : Building
 		Processor.Id = argId;
 		InitPorts(ConnectPortType.InOut, Processor, argNet);
 		argNet.AddProcessor(Processor);
+	}
+
+	public void ChangeLevel(int argType)
+	{
+		Destroy(CurrentLevel);
+		GameObject level = Instantiate(LevelModel[argType]);
+		level.transform.SetParent(LevelRoot.transform, false);
+
+		CurrentLevel = level;
 	}
 
 	protected override void Debug()
